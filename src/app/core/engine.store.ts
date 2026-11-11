@@ -12,10 +12,10 @@ import {
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { filter } from 'rxjs';
-import { planetsFor, type Lang } from '../content';
+import { planetsFor, projectsFor, type Lang } from '../content';
 import type { EngineHost } from '../engine/base';
-import type { PlanetView } from '../engine/types';
-import { SkywardEngine, initData } from '../engine/engine';
+import type { PlanetView, ProjectView } from '../engine/types';
+import { GalaxyEngine, initData } from '../engine/engine';
 import { ENGINE_STRINGS } from '../i18n/engine-strings';
 import { UI_STRINGS, type UiStrings } from '../i18n/ui-strings';
 import type { EngineView } from '../shared/view-part';
@@ -24,7 +24,7 @@ import { SKYWARD_SETTINGS } from './settings';
 import { SeoService } from './seo';
 
 /**
- * Owns the SkywardEngine for one language and bridges it to Angular:
+ * Owns the GalaxyEngine for one language and bridges it to Angular:
  * state changes re-render through a signal, and engine locations map to router URLs.
  * Provided by the Shell, so pages share one engine while the user navigates.
  */
@@ -33,11 +33,11 @@ export class EngineStore {
   readonly browser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly router = inject(Router);
   private readonly doc = inject(DOCUMENT);
-  readonly lang: Lang = inject(ActivatedRoute).snapshot.paramMap.get('lang') === 'en' ? 'en' : 'it';
+  readonly lang: Lang = inject(ActivatedRoute).snapshot.paramMap.get('lang') === 'it' ? 'it' : 'en';
   readonly strings = signal<UiStrings>(UI_STRINGS[this.lang]).asReadonly();
 
   private readonly tick = signal(0);
-  private engine?: SkywardEngine;
+  private engine?: GalaxyEngine;
   private pending: { prev: unknown; cbs: (() => void)[] } | null = null;
   readonly view = computed<EngineView>(() => {
     this.tick();
@@ -64,8 +64,12 @@ export class EngineStore {
         this.tick.update(n => n + 1);
       },
     };
-    initData(ENGINE_STRINGS[this.lang], planetsFor(this.lang) as unknown as Record<string, PlanetView[]>);
-    this.engine = new SkywardEngine(host, {
+    initData(
+      ENGINE_STRINGS[this.lang],
+      planetsFor(this.lang) as unknown as Record<string, PlanetView[]>,
+      projectsFor(this.lang) as unknown as ProjectView[],
+    );
+    this.engine = new GalaxyEngine(host, {
       send: values => sendContact(values, this.lang),
       navigate: (path, replace) =>
         this.router.navigateByUrl('/' + this.lang + (path === '/' ? '' : path), { replaceUrl: replace }),
@@ -93,7 +97,7 @@ export class EngineStore {
     inject(DestroyRef).onDestroy(() => this.engine?.componentWillUnmount());
   }
 
-  /** '/it/work/skyward?x#y' -> '/work/skyward' */
+  /** '/en/projects/txt-group?x#y' -> '/projects/txt-group' */
   private pathOf(url: string): string {
     const segs = url.split(/[?#]/)[0].split('/').filter(Boolean).slice(1);
     return '/' + segs.join('/');

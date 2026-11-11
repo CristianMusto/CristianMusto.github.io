@@ -67,7 +67,7 @@
   padding: 0 14px;
   border: 0;
   border-radius: 4px;
-  background: var(--color-work);
+  background: var(--color-projects);
   color: var(--color-bg);
   font: 600 15px var(--font-text);
   cursor: pointer;
@@ -79,7 +79,7 @@
 }
 
 .btn-primary:focus-visible {
-  outline: 2px solid var(--color-work);
+  outline: 2px solid var(--color-projects);
   outline-offset: 3px;
 }
 
@@ -100,6 +100,6 @@
 }
 
 .btn-ghost:focus-visible {
-  outline: 2px solid var(--color-work);
+  outline: 2px solid var(--color-projects);
   outline-offset: 3px;
 }

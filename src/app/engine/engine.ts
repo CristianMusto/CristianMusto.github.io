@@ -1,5 +1,5 @@
 /**
- * The Skyward galaxy engine: state, camera and canvas fields.
+ * The NightSky galaxy engine: state, camera and canvas fields.
  * Behaviour lives in the modules below, mixed into the prototype; each module types the
  * part of the engine it uses (its own `…Ctx` interface), so this class only holds data.
  */
@@ -36,13 +36,13 @@ function readShot(): string | null {
 /** True when this load comes from a language switch (the page starts under a veil). */
 function readLangSwitch(): boolean {
   try {
-    return sessionStorage.getItem('skyward.langSwitch') === '1';
+    return sessionStorage.getItem('nightsky.langSwitch') === '1';
   } catch {
     return false;
   }
 }
 
-export class SkywardEngine extends EngineBase<EngineState> {
+export class GalaxyEngine extends EngineBase<EngineState> {
   // Methods the Angular host calls directly (provided by the modules at runtime).
   declare renderVals: () => Record<string, unknown>;
   declare componentDidMount: () => void;
@@ -50,7 +50,7 @@ export class SkywardEngine extends EngineBase<EngineState> {
   declare componentWillUnmount: () => void;
   declare onRoute: (path: string) => void;
 
-  /** Current path without language, e.g. '/work/skyward'. Set by the host before mount. */
+  /** Current path without language, e.g. '/projects/personal-projects/nightsky'. Set by the host before mount. */
   routePath = '/';
 
   /** Methods passed to the template as handlers: bound to the instance by EngineBase. */
@@ -109,6 +109,7 @@ export class SkywardEngine extends EngineBase<EngineState> {
     sel: -1,
     hover: -1,
     psel: -1,
+    proj: null,
     phover: -1,
     landMsg: '',
     here: HOME,
@@ -173,7 +174,7 @@ export class SkywardEngine extends EngineBase<EngineState> {
 }
 
 Object.assign(
-  SkywardEngine.prototype,
+  GalaxyEngine.prototype,
   lifecycle,
   quality,
   intro,

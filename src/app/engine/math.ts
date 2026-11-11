@@ -18,14 +18,14 @@ export const clamp = (v: number, a: number, b: number): number => (v < a ? a : v
 function readSeed(): number {
   let s = 0;
   try {
-    s = Number(sessionStorage.getItem('skyward.seed') ?? 0) || 0;
+    s = Number(sessionStorage.getItem('nightsky.seed') ?? 0) || 0;
   } catch {
     /* storage blocked */
   }
   if (!s) {
     s = 1 + Math.floor(Math.random() * 2147483646);
     try {
-      sessionStorage.setItem('skyward.seed', String(s));
+      sessionStorage.setItem('nightsky.seed', String(s));
     } catch {
       /* storage blocked */
     }

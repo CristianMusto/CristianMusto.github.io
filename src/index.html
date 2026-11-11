@@ -1,21 +1,21 @@
 <!doctype html>
-<html lang="it">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Skyward</title>
+    <title>NightSky · Cristian Musto</title>
     <base href="/" />
     <script>
-      // Old mockup links used hash routes ("…?return=1#/work/skyward", e.g. from the design system):
+      // Old mockup links used hash routes ("…?return=1#/projects/txt-group", e.g. from the design system):
       // send them to the real page instead of letting the app fall back to the galaxy.
       (function () {
-        var m = /^#\/([\w-]+(?:\/[\w-]+)?)$/.exec(location.hash);
+        var m = /^#\/([\w-]+(?:\/[\w-]+){0,2})$/.exec(location.hash);
         if (!m) return;
         var back = null;
         try {
-          back = sessionStorage.getItem('skyward.dsReturn');
+          back = sessionStorage.getItem('nightsky.dsReturn');
         } catch (e) {}
         var ok = back && back.charAt(0) === '/' && back.charAt(1) !== '/';
-        var lang = /\/en(\/|$)/.test(location.pathname) ? 'en' : 'it';
+        var lang = /\/it(\/|$)/.test(location.pathname) ? 'it' : 'en';
         location.replace(ok ? back : new URL(lang + '/' + m[1], document.baseURI).href);
       })();
     </script>
@@ -24,12 +24,12 @@
     <meta name="theme-color" content="#0B0A1F" />
     <meta
       name="description"
-      content="Cristian Musto, designer and web developer. Sophisticated, modern websites, from the first sketch to launch."
+      content="Cristian Musto, software developer and UI/UX designer. Web applications built with Angular and .NET, and the interfaces they run on."
     />
-    <meta property="og:title" content="Skyward · Your idea, in orbit." />
+    <meta property="og:title" content="NightSky · Cristian Musto, software developer and UI/UX designer" />
     <meta
       property="og:description"
-      content="Cristian Musto, designer and web developer. Sophisticated, modern websites, from the first sketch to launch."
+      content="Cristian Musto, software developer and UI/UX designer. Web applications built with Angular and .NET, and the interfaces they run on."
     />
     <meta property="og:image" content="assets/og-image.png" />
     <meta property="og:image:width" content="1200" />
@@ -38,7 +38,7 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <script>
       try {
-        if (sessionStorage.getItem('skyward.langSwitch') === '1')
+        if (sessionStorage.getItem('nightsky.langSwitch') === '1')
           document.documentElement.setAttribute('data-sk-veil', '');
       } catch (e) {}
     </script>

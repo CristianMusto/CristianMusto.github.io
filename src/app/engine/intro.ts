@@ -5,7 +5,7 @@
 import { DHOME, STR, clamp } from './data';
 import type { EngineCtx } from './types';
 
-const SEEN_KEY = 'skyward.introSeen';
+const SEEN_KEY = 'nightsky.introSeen';
 /** Camera approach after the warp (ms). */
 const APPROACH_MS = 4200;
 const APPROACH_FROM_DIST = 9000;
@@ -124,7 +124,7 @@ export const intro = {
       sy: startY,
       end: [this.W / 2, this.H * 0.4],
       tint: '255,210,160',
-      name: 'Skyward',
+      name: 'NightSky',
       ly: 4.6,
       dir: 1,
       snap: null,

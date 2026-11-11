@@ -63,7 +63,7 @@
   flex: 1 1 280px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .proof-card {
@@ -89,7 +89,7 @@
 }
 
 .proof-card:focus-visible {
-  outline: 2px solid var(--color-work);
+  outline: 2px solid var(--color-projects);
   outline-offset: 3px;
 }
 
@@ -98,7 +98,7 @@
   height: 40px;
   flex: none;
   border-radius: 50%;
-  background: radial-gradient(circle at 34% 30%, #e4fbff 0%, #5fc8d8 40%, #0e3a48 100%);
+  background: var(--background);
 }
 
 .proof-text {
@@ -110,9 +110,33 @@
 .proof-meta {
   font: 400 12px var(--font-mono);
   letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--color-muted);
 }
 
 .proof-name {
   font: 600 22px/1.1 var(--font-display);
+}
+
+.item-level {
+  margin-top: 2px;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  font: 400 12px var(--font-mono);
+  letter-spacing: 0.06em;
+  color: var(--color-text-2);
+}
+
+.level-dots {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.level-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1.5px solid var(--hex);
+  background: var(--fill);
 }

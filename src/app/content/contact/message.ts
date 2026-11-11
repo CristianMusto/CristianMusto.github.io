@@ -12,8 +12,8 @@ export const message: PlanetData = {
     it: 'Modulo',
   },
   desc: {
-    en: 'Tell me about your project. I reply within two working days.',
-    it: 'Raccontami il tuo progetto. Rispondo entro due giorni lavorativi.',
+    en: 'Roles, collaborations or a question. I reply within two working days.',
+    it: 'Ruoli, collaborazioni o una domanda. Rispondo entro due giorni lavorativi.',
   },
   c: 'violet',
   size: 36,

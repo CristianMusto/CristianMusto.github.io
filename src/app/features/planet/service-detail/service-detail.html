@@ -3,30 +3,45 @@
 <div class="service">
   <div class="service-included">
     <h2 class="section-title">
-      {{ t.whatSIncluded }}
+      {{ txt(v?.page?.itemsTitle) || t.whatSIncluded }}
     </h2>
     <ol class="included-list">
       @for (it of v?.page?.items ?? []; track $index) {
         <li class="included-item">
           <span class="item-num" [style.--color]="txt(v?.page?.hex)">{{ txt(it?.n) }}</span
           ><span class="item-text"
-            ><span class="item-name">{{ txt(it?.t) }}</span
-            ><span class="item-desc">{{ txt(it?.d) }}</span></span
+            ><span class="item-name">{{ txt(it?.t) }}</span>
+            @if (it?.hasLv) {
+              <span class="item-level"
+                ><span class="level-dots" aria-hidden="true" [style.--hex]="txt(v?.page?.hex)"
+                  ><span class="level-dot" [style.--fill]="txt(it?.d1)"></span
+                  ><span class="level-dot" [style.--fill]="txt(it?.d2)"></span
+                  ><span class="level-dot" [style.--fill]="txt(it?.d3)"></span></span
+                >{{
+                  it?.lv === 3 ? t.levelAdvanced : it?.lv === 2 ? t.levelIntermediate : t.levelGettingStarted
+                }}</span
+              >
+            }
+            <span class="item-desc">{{ txt(it?.d) }}</span></span
           >
         </li>
       }
     </ol>
   </div>
-  <div class="service-proof">
-    <h2 class="section-title">
-      {{ t.relatedWork }}
-    </h2>
-    <button class="proof-card" (click)="call(v?.page?.goCase, $event)">
-      <span class="proof-planet" aria-hidden="true"></span
-      ><span class="proof-text"
-        ><span class="proof-meta">{{ t.sys01Work }}</span
-        ><span class="proof-name">Skyward</span></span
-      >
-    </button>
-  </div>
+  @if (v?.page?.hasRelated) {
+    <div class="service-proof">
+      <h2 class="section-title">
+        {{ t.relatedWork }}
+      </h2>
+      @for (r of v?.page?.related ?? []; track $index) {
+        <button class="proof-card" (click)="call(r?.go, $event)">
+          <span class="proof-planet" aria-hidden="true" [style.--background]="txt(r?.bg)"></span
+          ><span class="proof-text"
+            ><span class="proof-meta">{{ txt(r?.sub) }}</span
+            ><span class="proof-name">{{ txt(r?.label) }}</span></span
+          >
+        </button>
+      }
+    </div>
+  }
 </div>

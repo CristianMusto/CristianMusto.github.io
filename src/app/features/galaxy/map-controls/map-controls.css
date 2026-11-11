@@ -53,7 +53,7 @@
 }
 
 .zoom-in:focus-visible {
-  outline: 2px solid var(--color-work);
+  outline: 2px solid var(--color-projects);
   outline-offset: 3px;
 }
 
@@ -82,7 +82,7 @@
 }
 
 .zoom-out:focus-visible {
-  outline: 2px solid var(--color-work);
+  outline: 2px solid var(--color-projects);
   outline-offset: 3px;
 }
 
@@ -111,7 +111,7 @@
 }
 
 .recenter:focus-visible {
-  outline: 2px solid var(--color-work);
+  outline: 2px solid var(--color-projects);
   outline-offset: 3px;
 }
 

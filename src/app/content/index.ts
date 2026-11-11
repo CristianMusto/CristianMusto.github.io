@@ -1,11 +1,12 @@
-import { work } from './work';
-import { services } from './services';
-import { process } from './process';
+import { projects, PROJECTS } from './projects';
+import { skills } from './skills';
+import { lab } from './lab';
 import { about } from './about';
 import { contact } from './contact';
-import type { Lang, PlanetData } from './types';
+import type { Lang, PlanetData, ProjectData } from './types';
 
 export * from './types';
+export { PROJECTS };
 
 /** Planet palettes: [light, mid, dark]. */
 export const PC: Record<string, string[]> = {
@@ -19,11 +20,11 @@ export const PC: Record<string, string[]> = {
 };
 
 export const CONTENT: Record<string, PlanetData[]> = {
-  work: work,
-  services: services,
-  process: process,
-  about: about,
-  contact: contact,
+  projects,
+  skills,
+  lab,
+  about,
+  contact,
 };
 
 const pick = (v: unknown, lang: Lang): unknown => {
@@ -42,3 +43,9 @@ const pick = (v: unknown, lang: Lang): unknown => {
 
 /** Content in the shape the mockup engine expects (its PL constant). */
 export const planetsFor = (lang: Lang) => pick(CONTENT, lang) as Record<string, Record<string, unknown>[]>;
+
+/** Project detail pages in the page language. */
+export const projectsFor = (lang: Lang) => pick(PROJECTS, lang) as Record<string, unknown>[];
+
+/** Every project, typed (used by the server routes). */
+export type { ProjectData };

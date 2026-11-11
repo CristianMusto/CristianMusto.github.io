@@ -12,8 +12,8 @@ export async function sendContact(values: ContactValues, lang: Lang): Promise<bo
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify({
         access_key: environment.web3formsKey,
-        subject: 'Skyward · ' + values.nome,
-        from_name: 'Skyward website',
+        subject: 'NightSky · ' + values.nome,
+        from_name: 'NightSky website',
         name: values.nome,
         email: values.email,
         message: values.msg,

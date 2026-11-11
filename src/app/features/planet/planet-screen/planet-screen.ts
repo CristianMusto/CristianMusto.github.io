@@ -8,11 +8,24 @@ import { Crew } from '../crew/crew';
 import { AboutDetail } from '../about-detail/about-detail';
 import { ContactDetails } from '../contact-details/contact-details';
 import { ContactForm } from '../contact-form/contact-form';
+import { CompanyDetail } from '../company-detail/company-detail';
+import { ProjectDetail } from '../project-detail/project-detail';
 
 /** Planet page shell: header, horizon, body, prev/next. */
 @Component({
   selector: 'sky-planet-screen',
-  imports: [SkyRef, CaseStudy, ServiceDetail, ProcessStep, Crew, AboutDetail, ContactDetails, ContactForm],
+  imports: [
+    SkyRef,
+    CaseStudy,
+    CompanyDetail,
+    ProjectDetail,
+    ServiceDetail,
+    ProcessStep,
+    Crew,
+    AboutDetail,
+    ContactDetails,
+    ContactForm,
+  ],
   templateUrl: './planet-screen.html',
   styleUrl: './planet-screen.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

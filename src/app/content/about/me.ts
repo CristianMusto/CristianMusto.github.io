@@ -9,14 +9,14 @@ export const me: PlanetData = {
   type: 'about',
   kind: 'Cristian Musto',
   desc: {
-    en: 'Designer and web developer from Grignasco, Italy.',
-    it: 'Designer e web developer di Grignasco.',
+    en: 'Software developer and UI/UX designer from Grignasco, Italy.',
+    it: 'Software developer e UI/UX designer di Grignasco.',
   },
   c: 'green',
   size: 34,
   lead: {
-    en: 'I’m Cristian Musto. I design and build websites, and Skyward is where I do it.',
-    it: 'Sono Cristian Musto. Progetto e sviluppo siti web, e Skyward è dove lo faccio.',
+    en: 'I’m Cristian Musto. I build web applications and design the interfaces they run on.',
+    it: 'Sono Cristian Musto. Sviluppo applicazioni web e ne progetto le interfacce.',
   },
   blocks: [
     {
@@ -26,30 +26,30 @@ export const me: PlanetData = {
         it: 'Prima developer',
       },
       d: {
-        en: 'I have spent the last four years building websites and web applications. Code is where I started, and it shapes how I design.',
-        it: 'Negli ultimi quattro anni ho sviluppato siti e applicazioni web. Ho iniziato dal codice, ed è il codice a guidare il mio modo di progettare.',
+        en: 'Over four years building for the web, at NSS first and now at TXT. Angular, TypeScript and SQL Server are where I’m strongest.',
+        it: 'Più di quattro anni di sviluppo web, prima in NSS e ora in TXT. Angular, TypeScript e SQL Server sono dove sono più forte.',
       },
     },
     {
       n: '02',
       t: {
-        en: 'Now also a designer',
-        it: 'Ora anche designer',
+        en: 'Designer, growing',
+        it: 'Designer in crescita',
       },
       d: {
-        en: 'More recently I moved into design: interfaces, visual identities and design systems. Doing both means what I design can actually be built.',
-        it: 'Più di recente mi sono spostato sul design: interfacce, identità visive e design system. Fare entrambe le cose significa che ciò che progetto si può davvero sviluppare.',
+        en: 'Design is newer for me: I’m at an intermediate level with UI/UX and Figma, and I design some of the products I build.',
+        it: 'Il design è più recente per me: sono a un livello intermedio con UI/UX e Figma, e progetto alcuni dei prodotti che sviluppo.',
       },
     },
     {
       n: '03',
       t: {
-        en: 'One person, start to finish',
-        it: 'Una persona, dall’inizio alla fine',
+        en: 'Always learning',
+        it: 'Sempre in formazione',
       },
       d: {
-        en: 'Skyward is just me. You talk to the same person from the first call to launch, with no hand-offs in between.',
-        it: 'Skyward sono io. Parli con la stessa persona dalla prima call al lancio, senza passaggi di mano.',
+        en: 'Right now I’m getting started with ASP.NET Core and EF Core, after courses in React, UX/UI and web design.',
+        it: 'In questo momento sto iniziando con ASP.NET Core ed EF Core, dopo i corsi di React, UX/UI e web design.',
       },
     },
   ],

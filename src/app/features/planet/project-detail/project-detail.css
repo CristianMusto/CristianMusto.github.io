@@ -1,0 +1,151 @@
+.project-cover {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.project-cover img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 6px;
+  border: 1px solid rgb(var(--rgb-text) / 0.16);
+}
+
+.project {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px 64px;
+}
+
+.project-blocks {
+  flex: 2 1 520px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 32px;
+  align-content: start;
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 18px;
+  border-top: 1px solid var(--hex);
+}
+
+.block-title {
+  margin: 0;
+  font: 600 22px/1.2 var(--font-display);
+}
+
+.block-text {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--color-text-2);
+  text-wrap: pretty;
+}
+
+.project-side {
+  flex: 1 1 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.section-title {
+  margin: 0;
+  font: 600 clamp(28px, 3vw, 40px) / 1.1 var(--font-display);
+  font-variation-settings: 'wdth' 84;
+  letter-spacing: -0.015em;
+}
+
+.facts {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid rgb(var(--rgb-text) / 0.16);
+}
+
+.fact {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgb(var(--rgb-text) / 0.16);
+}
+
+.fact-key {
+  font: 400 12px var(--font-mono);
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+  padding-top: 3px;
+}
+
+.fact-value {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.visit {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 64px;
+  padding: 14px 18px;
+  border: 1px solid var(--hex);
+  border-radius: 6px;
+  background: rgb(var(--rgb-panel) / 0.6);
+  color: var(--color-text);
+  text-decoration: none;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.visit:hover {
+  background: var(--color-panel-hover);
+}
+
+.visit:focus-visible {
+  outline: 2px solid var(--color-projects);
+  outline-offset: 3px;
+}
+
+.visit-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.visit-title {
+  font: 600 18px/1.2 var(--font-display);
+}
+
+.visit-label {
+  font: 400 12px var(--font-mono);
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+}
+
+.nda {
+  margin: 0;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--color-text-2);
+}
+
+.nda svg {
+  flex: none;
+  margin-top: 3px;
+}

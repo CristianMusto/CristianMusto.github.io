@@ -75,7 +75,7 @@ export const audio = {
     master.gain.cancelScheduledValues(now);
     master.gain.setTargetAtTime(on ? 0.5 : 0, now, 0.25);
     try {
-      localStorage.setItem('skyward.audio', on ? '1' : '0');
+      localStorage.setItem('nightsky.audio', on ? '1' : '0');
     } catch {
       /* storage blocked */
     }

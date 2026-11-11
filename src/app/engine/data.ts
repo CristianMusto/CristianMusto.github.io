@@ -1,5 +1,5 @@
 import type { EngineStrings } from '../i18n/engine-strings';
-import type { PlanetView, StarSystem } from './types';
+import type { PlanetView, ProjectView, StarSystem } from './types';
 
 export * from './constants';
 export * from './math';
@@ -8,45 +8,52 @@ export * from './math';
 export let STR: EngineStrings;
 /** Planets per system id, in the page language. */
 export let PL: Record<string, PlanetView[]>;
+/** Project detail pages (cards of the company planets), in the page language. */
+export let PJ: ProjectView[] = [];
 /** The six star systems (Home last). */
 export let SYS: StarSystem[];
 
 /** Sets the language-dependent data. Call once before creating the engine. */
-export function initData(dict: EngineStrings, planets: Record<string, PlanetView[]>): void {
+export function initData(
+  dict: EngineStrings,
+  planets: Record<string, PlanetView[]>,
+  projects: ProjectView[] = [],
+): void {
   STR = dict;
   PL = planets;
+  PJ = projects;
   SYS = [
     {
-      id: 'work',
+      id: 'projects',
       code: 'SYS-01',
-      name: STR.work,
+      name: STR.projects,
       min: 4,
-      desc: STR.selectedProjectsStartingWith,
-      meta: STR.n1Planet,
+      desc: STR.projectsDesc,
+      meta: STR.projectsMeta,
       hex: '#7FE6F2',
       tint: '127,230,242',
       core: 12,
       p: [380, 40, -210],
     },
     {
-      id: 'services',
+      id: 'skills',
       code: 'SYS-02',
-      name: STR.services,
+      name: STR.skills,
       min: 3,
-      desc: STR.webDesignUiUx,
-      meta: STR.n4Planets,
+      desc: STR.skillsDesc,
+      meta: STR.skillsMeta,
       hex: '#FFD27A',
       tint: '255,210,122',
       core: 11,
       p: [-480, -25, -40],
     },
     {
-      id: 'process',
+      id: 'lab',
       code: 'SYS-03',
-      name: STR.process,
+      name: STR.lab,
       min: 2,
-      desc: STR.fourStagesFromThe,
-      meta: STR.n4Stages,
+      desc: STR.labDesc,
+      meta: STR.labMeta,
       hex: '#FF7A6B',
       tint: '255,122,107',
       core: 10,
@@ -57,8 +64,8 @@ export function initData(dict: EngineStrings, planets: Record<string, PlanetView
       code: 'SYS-04',
       name: STR.about,
       min: 2,
-      desc: STR.whoIAmAnd,
-      meta: STR.n3Planets,
+      desc: STR.aboutDesc,
+      meta: STR.aboutMeta,
       hex: '#8CF0A0',
       tint: '140,240,160',
       core: 10,
@@ -69,8 +76,8 @@ export function initData(dict: EngineStrings, planets: Record<string, PlanetView
       code: 'SYS-05',
       name: STR.contact,
       min: 1,
-      desc: STR.tellMeAboutYour,
-      meta: STR.n2Planets,
+      desc: STR.contactDesc,
+      meta: STR.contactMeta,
       hex: '#C3A6FF',
       tint: '195,166,255',
       core: 9,

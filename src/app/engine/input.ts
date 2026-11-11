@@ -1,5 +1,5 @@
 /** Pointer, wheel, keyboard and zoom controls for the galaxy map and the system view. */
-import { DMAX, DMIN, PL, SYS, STR, clamp } from './data';
+import { DMAX, DMIN, PJ, PL, SYS, STR, clamp } from './data';
 import type { EngineCtx, Vec3 } from './types';
 
 /** Radians of yaw per pixel dragged horizontally. */
@@ -249,6 +249,15 @@ function pageKeys(ctx: InputCtx, e: KeyboardEvent, k: string): void {
   if (k === 'escape' || k === 'm') {
     e.preventDefault();
     ctx.closePage();
+    return;
+  }
+  // Inside a project: arrows move between the projects of the same company.
+  const proj = ctx.state.proj;
+  if (proj && (k === 'arrowleft' || k === 'arrowright')) {
+    const siblings = PJ.filter(q => q.parent === planets[psel]?.key);
+    const at = siblings.findIndex(q => q.key === proj);
+    const to = siblings[at + (k === 'arrowleft' ? -1 : 1)];
+    if (to) ctx.goProj(to.key);
     return;
   }
   if (k === 'arrowleft' && psel > 0 && !planets[psel - 1].ghost) {
