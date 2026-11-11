@@ -50,6 +50,8 @@ interface OverlayCtx extends EngineCtx {
   heroAt: number | null;
   rc?: (DOMRect | null)[];
   rcT: number;
+  /** Systems whose label sits on the other side of the dot, so it does not cover another label. */
+  labelFlip?: Set<number>;
 
   /** System view layout: centre and orbit radii. */
   lay: { cx: number; cy: number; rx: number[] };
@@ -60,8 +62,162 @@ interface OverlayCtx extends EngineCtx {
   orb0: number | null;
 }
 
-/** Planet label with the side it is currently flipped to. */
-type PlanetLabel = HTMLElement & { _fl?: boolean };
+/**
+ * Planet label with the side it is flipped to, whether it shows only its number,
+ * and its full size (measured while the name is shown).
+ */
+type PlanetLabel = HTMLElement & { _fl?: boolean; _cm?: boolean; _full?: { w: number; h: number } };
+/** A planet label for this frame: screen centre of its planet, scaled sizes (full and number only) and default side. */
+type PlanetLabelPos = {
+  i: number;
+  label: PlanetLabel;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  cw: number;
+  ch: number;
+  gap: number;
+  depth: number;
+  edge: boolean;
+  scale: number;
+  /** Selected or hovered: never gives way. */
+  focus: boolean;
+};
+
+/** Screen box of a label. */
+type Box = { x0: number; x1: number; y0: number; y1: number };
+const boxesOverlap = (a: Box, b: Box) =>
+  a.x0 < b.x1 + 4 && b.x0 < a.x1 + 4 && a.y0 < b.y1 + 2 && b.y0 < a.y1 + 2;
+
+/**
+ * Last resort for labels that still overlap (narrow screens, where neither side has room):
+ * the label that gives way (`yieldOf`) moves up or down, whichever is shorter and stays in [minY, maxY].
+ * Returns the vertical offset of each box.
+ */
+function verticalNudges(
+  boxes: (Box | null)[],
+  yieldOf: (a: number, b: number) => number,
+  minY: number,
+  maxY: number,
+): number[] {
+  const dy = boxes.map(() => 0);
+  const at = (i: number): Box | null => {
+    const b = boxes[i];
+    return b && { x0: b.x0, x1: b.x1, y0: b.y0 + dy[i], y1: b.y1 + dy[i] };
+  };
+  for (let pass = 0; pass < 3; pass++) {
+    let moved = false;
+    for (let a = 0; a < boxes.length; a++) {
+      for (let b = a + 1; b < boxes.length; b++) {
+        const ra = at(a);
+        const rb = at(b);
+        if (!ra || !rb || !boxesOverlap(ra, rb)) continue;
+        const k = yieldOf(a, b);
+        const [rk, ro] = k === a ? [ra, rb] : [rb, ra];
+        const down = ro.y1 + 3 - rk.y0;
+        const up = rk.y1 + 3 - ro.y0;
+        let d = down <= up ? down : -up;
+        if (rk.y0 + d < minY || rk.y1 + d > maxY) d = d > 0 ? -up : down;
+        dy[k] += d;
+        moved = true;
+      }
+    }
+    if (!moved) break;
+  }
+  return dy;
+}
+
+/** Eases a label towards its vertical offset, so nudges do not jump between frames. */
+type Nudged = HTMLElement & { _dy?: number };
+function applyNudge(el: Nudged, target: number, unit = 1): void {
+  const prev = el._dy ?? 0;
+  const next = Math.abs(target - prev) < 0.5 ? target : prev + (target - prev) * 0.3;
+  if (next === prev && el._dy !== undefined) return;
+  el._dy = next;
+  el.style.translate = next ? `0 ${(next / unit).toFixed(1)}px` : '';
+}
+
+/** Unscaled size of a planet label, full and with the number only. */
+function planetLabelSize(label: PlanetLabel): { w: number; h: number; cw: number; ch: number } {
+  if (!label._cm || !label._full) label._full = { w: label.offsetWidth || 120, h: label.offsetHeight || 36 };
+  const idx = label.firstElementChild as HTMLElement | null;
+  // 20 / 8 = the label's horizontal / vertical padding.
+  return { ...label._full, cw: (idx?.offsetWidth ?? 20) + 20, ch: (idx?.offsetHeight ?? 14) + 8 };
+}
+
+/**
+ * Planet labels sit right of the planet, or left near the right edge. When two labels overlap,
+ * the one on the far side of the orbit (never the selected or hovered one) moves to the other side of its planet if it fits on screen;
+ * if they still overlap (narrow screens) it shows only its number (the index under the map has the names),
+ * and as a last resort it moves up or down.
+ */
+function placePlanetLabels(labels: PlanetLabelPos[]): void {
+  const compact = labels.map(() => false);
+  const left = labels.map(l => l.edge);
+  const rect = (k: number, onLeft: boolean, grow = 0): Box => {
+    const l = labels[k];
+    const w = compact[k] ? l.cw : l.w;
+    const h = compact[k] ? l.ch : l.h;
+    const x0 = onLeft ? l.x - l.gap - w : l.x + l.gap;
+    return { x0: x0 - grow, x1: x0 + w + grow, y0: l.y - h / 2 - grow, y1: l.y + h / 2 + grow };
+  };
+  const farSide = (a: number, b: number) =>
+    labels[a].focus !== labels[b].focus
+      ? labels[a].focus
+        ? b
+        : a
+      : labels[a].depth < labels[b].depth
+        ? a
+        : b;
+  const pairs = (fn: (a: number, b: number) => void) => {
+    for (let a = 0; a < labels.length; a++) for (let b = a + 1; b < labels.length; b++) fn(a, b);
+  };
+
+  // 1. Swap sides.
+  const moved = new Set<number>();
+  pairs((a, b) => {
+    if (!boxesOverlap(rect(a, left[a]), rect(b, left[b]))) return;
+    const far = farSide(a, b);
+    for (const k of [far, far === a ? b : a]) {
+      const r = rect(k, !left[k]);
+      if (!moved.has(k) && r.x0 >= 16 && r.x1 <= innerWidth - 16) {
+        left[k] = !left[k];
+        moved.add(k);
+        break;
+      }
+    }
+  });
+  // 2. Number only. A label already compact keeps it until its full size clears by 6px, so it does not flicker.
+  pairs((a, b) => {
+    const far = farSide(a, b);
+    const near = far === a ? b : a;
+    const grow = labels[far].label._cm ? 6 : 0;
+    if (boxesOverlap(rect(far, left[far], grow), rect(near, left[near]))) compact[far] = true;
+  });
+  // 3. Up or down.
+  const dy = verticalNudges(
+    labels.map((_, k) => rect(k, left[k])),
+    farSide,
+    8,
+    innerHeight - 8,
+  );
+
+  labels.forEach((l, k) => {
+    applyNudge(l.label, dy[k], l.scale);
+    if (l.label._cm !== compact[k]) {
+      l.label._cm = compact[k];
+      const name = l.label.lastElementChild as HTMLElement | null;
+      if (name) name.style.display = compact[k] ? 'none' : '';
+    }
+    const flip = left[k];
+    if (l.label._fl === flip) return;
+    l.label._fl = flip;
+    l.label.style.left = flip ? 'auto' : 'calc(100% + 8px)';
+    l.label.style.right = flip ? 'calc(100% + 8px)' : 'auto';
+    l.label.style.textAlign = flip ? 'right' : 'left';
+  });
+}
 
 const px = (x: number, y: number) => `${x.toFixed(1)}px ${y.toFixed(1)}px`;
 const easeOut = (t: number, power: number) => 1 - Math.pow(1 - t, power);
@@ -95,7 +251,7 @@ export const overlay = {
         screen[i] = [p[0], p[1]];
         scales[i] = p[2];
       }
-      if (wrap) placeSystemLabel(this, wrap, p, !!system.home);
+      if (wrap) placeSystemLabel(this, wrap, p, !!system.home, !!this.labelFlip?.has(i));
       if (wrap && reveal != null) {
         const t =
           reveal === Infinity
@@ -174,6 +330,7 @@ export const overlay = {
     const targetSpeed = psel >= 0 || phover >= 0 ? 0 : 1;
     this.ospd += (targetSpeed - this.ospd) * (1 - Math.pow(0.02, dt));
 
+    const labels: PlanetLabelPos[] = [];
     for (let i = 0; i < count; i++) {
       if (this.orb[i] == null) {
         this.orb0 ??= rnd() * TAU;
@@ -195,21 +352,35 @@ export const overlay = {
       const wrap = this.pwraps[i];
       if (!wrap) continue;
       const label = wrap.lastElementChild as PlanetLabel | null;
+      const scale = (0.8 + 0.28 * depth) * (0.35 + 0.65 * grow);
       if (label?.style) {
-        const labelWidth = label.offsetWidth || 120;
-        const flip = x + wrap.offsetWidth / 2 + 8 + labelWidth > innerWidth - 16;
-        if (label._fl !== flip) {
-          label._fl = flip;
-          label.style.left = flip ? 'auto' : 'calc(100% + 8px)';
-          label.style.right = flip ? 'calc(100% + 8px)' : 'auto';
-          label.style.textAlign = flip ? 'right' : 'left';
-        }
+        const size = planetLabelSize(label);
+        const [w, h, cw, ch] = [size.w * scale, size.h * scale, size.cw * scale, size.ch * scale];
+        const gap = (wrap.offsetWidth / 2 + 8) * scale;
+        const edge = x + gap + w > innerWidth - 16;
+        labels.push({
+          i,
+          label,
+          x,
+          y,
+          w,
+          h,
+          cw,
+          ch,
+          gap,
+          depth,
+          edge,
+          scale,
+          focus: i === psel || i === phover,
+        });
       }
       wrap.style.translate = px(x, y);
-      wrap.style.scale = ((0.8 + 0.28 * depth) * (0.35 + 0.65 * grow)).toFixed(3);
+      wrap.style.scale = scale.toFixed(3);
       wrap.style.zIndex = Math.sin(angle) > 0 ? '3' : '1';
       wrap.style.opacity = ((0.7 + 0.3 * depth) * fade).toFixed(3);
     }
+
+    placePlanetLabels(labels);
 
     if (this.starEl) {
       const breathe = mo ? 1 + 0.05 * Math.sin(s * 1.3) : 1;
@@ -219,17 +390,27 @@ export const overlay = {
   },
 };
 
+/** A label on screen; edge = flipped left because it is near the right edge, px = x of its dot. */
+type Rect = Box & {
+  w: number;
+  hud: number;
+  edge: boolean;
+  px: number;
+};
+
 /** Size of each system label, measured every RECT_REFRESH ms with the secondary line visible. */
-type LabelBox = { w: number; h: number; t: number };
+type LabelBox = { w: number; h: number; hud: number; t: number };
 const labelBoxes = new WeakMap<HTMLElement, LabelBox>();
 
 /**
  * When two system labels overlap, the farther one hides its secondary line ("SYS-0x · n min")
- * and keeps only the name. Labels sit right of the dot, or left when flipped near the edge.
+ * and keeps only the name; if the names still overlap, one label moves to the other side of its dot,
+ * and as a last resort up or down.
+ * Labels sit right of the dot, or left when flipped near the edge.
  */
 function declutterLabels(ctx: OverlayCtx, now: number, scales: number[]): void {
   const screen = ctx.scr ?? [];
-  const rects: ({ x0: number; x1: number; y0: number; y1: number } | null)[] = [];
+  const rects: (Rect | null)[] = [];
   SYS.forEach((_, i) => {
     const p = screen[i];
     const wrap = ctx.wraps[i];
@@ -246,29 +427,71 @@ function declutterLabels(ctx: OverlayCtx, now: number, scales: number[]): void {
       box = {
         w: text.offsetWidth,
         h: hidden && box ? box.h : text.offsetHeight,
+        hud: hidden && box ? box.hud : (hud?.offsetHeight ?? 0),
         t: now,
       };
       labelBoxes.set(text, box);
     }
-    const flip = p[0] > ctx.W - FLIP_MARGIN;
-    const x0 = flip ? p[0] - 22 - box.w : p[0] + 22;
-    rects[i] = { x0, x1: x0 + box.w, y0: p[1] - 22, y1: p[1] - 22 + box.h };
+    const edge = p[0] > ctx.W - FLIP_MARGIN;
+    const x0 = edge ? p[0] - 22 - box.w : p[0] + 22;
+    rects[i] = {
+      x0,
+      x1: x0 + box.w,
+      y0: p[1] - 22,
+      y1: p[1] - 22 + box.h,
+      w: box.w,
+      hud: box.hud,
+      edge,
+      px: p[0],
+    };
   });
 
+  const overlaps = boxesOverlap;
+  const farther = (a: number, b: number) => ((scales[a] ?? 0) < (scales[b] ?? 0) ? a : b);
+
+  // 1. The farther of two overlapping labels drops its secondary line.
   const compact = new Set<number>();
   for (let a = 0; a < rects.length; a++) {
     const ra = rects[a];
     if (!ra) continue;
     for (let b = a + 1; b < rects.length; b++) {
       const rb = rects[b];
-      if (!rb) continue;
-      const overlap = ra.x0 < rb.x1 + 4 && rb.x0 < ra.x1 + 4 && ra.y0 < rb.y1 + 2 && rb.y0 < ra.y1 + 2;
-      if (overlap) compact.add((scales[a] ?? 0) < (scales[b] ?? 0) ? a : b);
+      if (rb && overlaps(ra, rb)) compact.add(farther(a, b));
     }
   }
 
+  // 2. If the names still overlap, one label moves to the other side of its dot (when it fits on screen).
+  const shown = rects.map((r, i) => (r && compact.has(i) ? { ...r, y1: r.y1 - r.hud } : r));
+  const sideSwap = (r: Rect): Rect => {
+    const x0 = r.edge ? r.px + 22 : r.px - 22 - r.w;
+    return { ...r, x0, x1: x0 + r.w };
+  };
+  const fits = (r: Rect) => r.x0 >= 8 && r.x1 <= ctx.W - 8;
+  const flips = new Set<number>();
+  for (let a = 0; a < shown.length; a++) {
+    for (let b = a + 1; b < shown.length; b++) {
+      const ra = shown[a];
+      const rb = shown[b];
+      if (!ra || !rb || !overlaps(ra, rb)) continue;
+      const first = farther(a, b);
+      for (const i of [first, first === a ? b : a]) {
+        const moved = sideSwap(shown[i] as Rect);
+        if (!flips.has(i) && fits(moved)) {
+          flips.add(i);
+          shown[i] = moved;
+          break;
+        }
+      }
+    }
+  }
+  ctx.labelFlip = flips;
+
+  // 3. Names that still overlap: the farther label moves up or down.
+  const dy = verticalNudges(shown, farther, 8, ctx.H - 8);
+
   SYS.forEach((_, i) => {
     const text = ctx.wraps[i]?.lastElementChild as HTMLElement | null | undefined;
+    if (text) applyNudge(text, dy[i]);
     const hud = text ? secondaryLine(text) : null;
     if (!hud) return;
     const display = compact.has(i) ? 'none' : '';
@@ -296,13 +519,20 @@ function placeBlackHoleButton(ctx: OverlayCtx): void {
   button.style.visibility = 'visible';
 }
 
-/** Moves a system label to its star; near the right edge the text goes to the left of the dot. */
-function placeSystemLabel(ctx: OverlayCtx, wrap: HTMLElement, p: ScreenPoint | null, isHome: boolean): void {
+/** Moves a system label to its star; near the right edge (or when swapped) the text goes to the left of the dot. */
+function placeSystemLabel(
+  ctx: OverlayCtx,
+  wrap: HTMLElement,
+  p: ScreenPoint | null,
+  isHome: boolean,
+  swapSide: boolean,
+): void {
   if (!p) {
     wrap.style.visibility = 'hidden';
     return;
   }
-  const flip = p[0] > ctx.W - FLIP_MARGIN;
+  const edge = p[0] > ctx.W - FLIP_MARGIN;
+  const flip = swapSide ? !edge : edge;
   wrap.style.translate = px(p[0], p[1]);
   wrap.style.visibility = 'visible';
   wrap.style.flexDirection = flip ? 'row-reverse' : 'row';
