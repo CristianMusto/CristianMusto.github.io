@@ -91,39 +91,42 @@ const boxesOverlap = (a: Box, b: Box) =>
   a.x0 < b.x1 + 4 && b.x0 < a.x1 + 4 && a.y0 < b.y1 + 2 && b.y0 < a.y1 + 2;
 
 /**
- * Last resort for labels that still overlap (narrow screens, where neither side has room):
- * the label that gives way (`yieldOf`) moves up or down, whichever is shorter and stays in [minY, maxY].
- * Returns the vertical offset of each box.
+ * Last resort for labels that still overlap (narrow screens, where neither side has room).
+ * Labels are placed by priority (`yieldOf` names the one that gives way); each takes the smallest
+ * vertical offset, within [minY, maxY], that clears the labels already placed. Keeping the direction
+ * of the previous offset (`prev`) is preferred, so a label does not cross over its neighbour.
  */
 function verticalNudges(
   boxes: (Box | null)[],
   yieldOf: (a: number, b: number) => number,
+  prev: number[],
   minY: number,
   maxY: number,
 ): number[] {
   const dy = boxes.map(() => 0);
-  const at = (i: number): Box | null => {
-    const b = boxes[i];
-    return b && { x0: b.x0, x1: b.x1, y0: b.y0 + dy[i], y1: b.y1 + dy[i] };
-  };
-  for (let pass = 0; pass < 3; pass++) {
-    let moved = false;
-    for (let a = 0; a < boxes.length; a++) {
-      for (let b = a + 1; b < boxes.length; b++) {
-        const ra = at(a);
-        const rb = at(b);
-        if (!ra || !rb || !boxesOverlap(ra, rb)) continue;
-        const k = yieldOf(a, b);
-        const [rk, ro] = k === a ? [ra, rb] : [rb, ra];
-        const down = ro.y1 + 3 - rk.y0;
-        const up = rk.y1 + 3 - ro.y0;
-        let d = down <= up ? down : -up;
-        if (rk.y0 + d < minY || rk.y1 + d > maxY) d = d > 0 ? -up : down;
-        dy[k] += d;
-        moved = true;
-      }
+  const order = boxes
+    .map((_, i) => i)
+    .filter(i => boxes[i])
+    .sort((a, b) => (yieldOf(a, b) === b ? -1 : 1));
+  const placed: Box[] = [];
+  for (const i of order) {
+    const r = boxes[i] as Box;
+    const shift = (d: number): Box => ({ x0: r.x0, x1: r.x1, y0: r.y0 + d, y1: r.y1 + d });
+    const clear = (d: number) => {
+      const s = shift(d);
+      return (d === 0 || (s.y0 >= minY && s.y1 <= maxY)) && placed.every(o => !boxesOverlap(s, o));
+    };
+    if (!clear(0)) {
+      // Candidates: just below or just above each label in the way.
+      const candidates = placed
+        .filter(o => r.x0 < o.x1 + 4 && o.x0 < r.x1 + 4)
+        .flatMap(o => [o.y1 + 3 - r.y0, o.y0 - 3 - r.y1])
+        .filter(clear);
+      const cost = (d: number) => Math.abs(d) + (prev[i] && Math.sign(d) !== Math.sign(prev[i]) ? 24 : 0);
+      candidates.sort((a, b) => cost(a) - cost(b));
+      if (candidates.length) dy[i] = candidates[0];
     }
-    if (!moved) break;
+    placed.push(shift(dy[i]));
   }
   return dy;
 }
@@ -199,6 +202,7 @@ function placePlanetLabels(labels: PlanetLabelPos[]): void {
   const dy = verticalNudges(
     labels.map((_, k) => rect(k, left[k])),
     farSide,
+    labels.map(l => (l.label as Nudged)._dy ?? 0),
     8,
     innerHeight - 8,
   );
@@ -390,16 +394,18 @@ export const overlay = {
   },
 };
 
-/** A label on screen; edge = flipped left because it is near the right edge, px = x of its dot. */
+/** A label on screen; edge = flipped left because it is near the right edge, px = x of its dot, off = extra gap from a large star. */
 type Rect = Box & {
+  off: number;
   w: number;
+  nw: number;
   hud: number;
   edge: boolean;
   px: number;
 };
 
-/** Size of each system label, measured every RECT_REFRESH ms with the secondary line visible. */
-type LabelBox = { w: number; h: number; hud: number; t: number };
+/** Size of each system label (nw = width with the name only), measured every RECT_REFRESH ms with the secondary line visible. */
+type LabelBox = { w: number; h: number; hud: number; nw: number; t: number };
 const labelBoxes = new WeakMap<HTMLElement, LabelBox>();
 
 /**
@@ -423,9 +429,12 @@ function declutterLabels(ctx: OverlayCtx, now: number, scales: number[]): void {
     if (!box || now - box.t > RECT_REFRESH) {
       const hud = secondaryLine(text);
       const hidden = hud?.style.display === 'none';
-      // Measure with the secondary line shown, so the box does not shrink after hiding it.
+      // Full size is measured with the secondary line shown, so the box does not shrink after hiding it.
+      const name = text.firstElementChild as HTMLElement | null;
       box = {
-        w: text.offsetWidth,
+        w: hidden && box ? box.w : text.offsetWidth,
+        // 20 = the label's horizontal padding.
+        nw: (name?.offsetWidth ?? 0) + 20,
         h: hidden && box ? box.h : text.offsetHeight,
         hud: hidden && box ? box.hud : (hud?.offsetHeight ?? 0),
         t: now,
@@ -433,13 +442,16 @@ function declutterLabels(ctx: OverlayCtx, now: number, scales: number[]): void {
       labelBoxes.set(text, box);
     }
     const edge = p[0] > ctx.W - FLIP_MARGIN;
-    const x0 = edge ? p[0] - 22 - box.w : p[0] + 22;
+    const off = homeOffset(!!SYS[i].home, scales[i] ?? 0);
+    const x0 = edge ? p[0] - 22 - off - box.w : p[0] + 22 + off;
     rects[i] = {
+      off,
       x0,
       x1: x0 + box.w,
       y0: p[1] - 22,
       y1: p[1] - 22 + box.h,
       w: box.w,
+      nw: box.nw,
       hud: box.hud,
       edge,
       px: p[0],
@@ -461,9 +473,20 @@ function declutterLabels(ctx: OverlayCtx, now: number, scales: number[]): void {
   }
 
   // 2. If the names still overlap, one label moves to the other side of its dot (when it fits on screen).
-  const shown = rects.map((r, i) => (r && compact.has(i) ? { ...r, y1: r.y1 - r.hud } : r));
+  // Without the secondary line a label is as wide as its name, still against its dot.
+  const shown = rects.map((r, i) =>
+    r && compact.has(i)
+      ? {
+          ...r,
+          w: r.nw,
+          x0: r.edge ? r.x1 - r.nw : r.x0,
+          x1: r.edge ? r.x1 : r.x0 + r.nw,
+          y1: r.y1 - r.hud,
+        }
+      : r,
+  );
   const sideSwap = (r: Rect): Rect => {
-    const x0 = r.edge ? r.px + 22 : r.px - 22 - r.w;
+    const x0 = r.edge ? r.px + 22 + r.off : r.px - 22 - r.off - r.w;
     return { ...r, x0, x1: x0 + r.w };
   };
   const fits = (r: Rect) => r.x0 >= 8 && r.x1 <= ctx.W - 8;
@@ -487,16 +510,28 @@ function declutterLabels(ctx: OverlayCtx, now: number, scales: number[]): void {
   ctx.labelFlip = flips;
 
   // 3. Names that still overlap: the farther label moves up or down.
-  const dy = verticalNudges(shown, farther, 8, ctx.H - 8);
+  const texts = SYS.map((_, i) => ctx.wraps[i]?.lastElementChild as Nudged | null | undefined);
+  const dy = verticalNudges(
+    shown,
+    farther,
+    texts.map(t => t?._dy ?? 0),
+    8,
+    ctx.H - 8,
+  );
 
   SYS.forEach((_, i) => {
-    const text = ctx.wraps[i]?.lastElementChild as HTMLElement | null | undefined;
+    const text = texts[i];
     if (text) applyNudge(text, dy[i]);
     const hud = text ? secondaryLine(text) : null;
     if (!hud) return;
     const display = compact.has(i) ? 'none' : '';
     if (hud.style.display !== display) hud.style.display = display;
   });
+}
+
+/** The Home star is drawn larger, so its label moves out past the star's radius. */
+function homeOffset(isHome: boolean, scale: number): number {
+  return isHome ? Math.max(0, clamp(24 * scale, 7, 260) - 8) : 0;
 }
 
 /** The "SYS-0x · n min" line inside a system label. */
@@ -540,9 +575,7 @@ function placeSystemLabel(
   const text = wrap.lastElementChild as HTMLElement | null;
   if (!text?.style) return;
   text.style.textAlign = flip ? 'right' : 'left';
-  // The Home star is drawn larger, so its label moves out past the star's radius.
-  const radius = isHome ? clamp(24 * p[2], 7, 260) : 0;
-  const offset = `${Math.max(0, radius - 8)}px`;
+  const offset = `${homeOffset(isHome, p[2])}px`;
   text.style.marginLeft = flip ? '0px' : offset;
   text.style.marginRight = flip ? offset : '0px';
 }
