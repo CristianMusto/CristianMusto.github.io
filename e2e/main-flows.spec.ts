@@ -101,6 +101,14 @@ test.describe('projects', () => {
     await expect(page.getByRole('heading', { name: EN.caseJourney })).toBeVisible();
   });
 
+  test('the design system returns to the case study it was opened from', async ({ page }) => {
+    await page.goto('/it/lab/nightsky-design');
+    await page.getByRole('link', { name: IT.openTheDesignSystem }).click();
+    await expect(page).toHaveURL(/\/design-system\.html$/);
+    await page.goto('/design-system-back.html');
+    await expect(page).toHaveURL(/\/it\/lab\/nightsky-design$/);
+  });
+
   test('related work on a skill opens the project', async ({ page }) => {
     await page.goto('/en/skills/front-end');
     await page.getByRole('button', { name: /Gucci/ }).click();
