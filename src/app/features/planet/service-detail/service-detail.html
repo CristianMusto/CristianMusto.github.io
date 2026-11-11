@@ -34,13 +34,7 @@
         {{ t.relatedWork }}
       </h2>
       @for (r of v?.page?.related ?? []; track $index) {
-        <button class="proof-card" (click)="call(r?.go, $event)">
-          <span class="proof-planet" aria-hidden="true" [style.--background]="txt(r?.bg)"></span
-          ><span class="proof-text"
-            ><span class="proof-meta">{{ txt(r?.sub) }}</span
-            ><span class="proof-name">{{ txt(r?.label) }}</span></span
-          >
-        </button>
+        <sky-proof-card [item]="r"></sky-proof-card>
       }
     </div>
   }

@@ -51,7 +51,8 @@ const EN = {
   leg01LiftOff: 'Leg 01 · Lift-off',
   theBrief: 'The brief',
   caseBrief:
-    'NightSky started as Skyward, the website of my own design studio, and in 2026 became my portfolio. I was the client both times. The brief was easy to write and hard to meet: a site that feels like exploring, while staying quick to read and easy to use.',
+    'NightSky is my portfolio, and I was its client. It began as Skyward, the idea for a design studio of my own: I designed its website first, then in 2026 I turned it into the place for my work. The brief was easy to write and hard to meet: a site that feels like exploring, while staying quick to read and easy to use.',
+  caseYear: '2026 – today',
   client: 'Client',
   caseClient: 'Personal project',
   scope: 'Scope',
@@ -62,7 +63,7 @@ const EN = {
   leg02TheMark: 'Leg 02 · The mark',
   aMarkThatDraws: 'A mark that draws itself',
   theLogoIsMade:
-    'The logo is made of continuous strokes, so it can be traced as a line before it fills. That animation opens the site and comes back in small moments across the pages.',
+    'The mark is a crescent moon and a four-point star: the night sky in two shapes, simple enough to read even as a favicon. Both are single closed outlines, so they can be traced as a line before they fill. That animation opens the site, and you can replay it here.',
   replayTheStroke: 'Replay the stroke',
   fromTheSketchbook: 'From the sketchbook',
   openSketch: 'Open sketch',
@@ -100,7 +101,7 @@ const EN = {
   kOr: 'or',
   sketchesNote:
     'These boards are AI-generated reworkings of the hand sketches made during the project. They keep the original ideas, composition and notes (in Italian).',
-  sketchLogo: 'Logo exploration: from a typographic S to a stroke with a trail',
+  sketchLogo: 'Where it started: logo exploration for Skyward, from a typographic S to a stroke with a trail',
   sketchGalaxy: 'Galaxy map wireframe',
   sketchFlow: 'Navigation flow between planets',
   sketchGrid: 'Page grid and layout',
@@ -245,7 +246,8 @@ const IT: UiStrings = {
   leg01LiftOff: 'Tappa 01 · Decollo',
   theBrief: 'Il brief',
   caseBrief:
-    'NightSky è nato come Skyward, il sito del mio studio di design, e nel 2026 è diventato il mio portfolio. Il cliente, entrambe le volte, ero io. Il brief era facile da scrivere e difficile da rispettare: un sito che dia la sensazione di esplorare, restando veloce da leggere e facile da usare.',
+    'NightSky è il mio portfolio, e il cliente ero io. È nato come Skyward, l’idea di un mio studio di design: prima ne ho progettato il sito, poi nel 2026 l’ho trasformato nello spazio per i miei lavori. Il brief era facile da scrivere e difficile da rispettare: un sito che dia la sensazione di esplorare, restando veloce da leggere e facile da usare.',
+  caseYear: '2026 – oggi',
   client: 'Cliente',
   caseClient: 'Progetto personale',
   scope: 'Ambito',
@@ -256,7 +258,7 @@ const IT: UiStrings = {
   leg02TheMark: 'Tappa 02 · Il marchio',
   aMarkThatDraws: 'Un marchio che si disegna da solo',
   theLogoIsMade:
-    'Il logo è fatto di tratti continui, quindi può essere tracciato come una linea prima di riempirsi. Questa animazione apre il sito e ritorna in piccoli momenti nelle pagine.',
+    'Il marchio è una luna crescente e una stella a quattro punte: il cielo notturno in due forme, abbastanza semplici da leggersi anche come favicon. Sono entrambe un unico contorno chiuso, quindi si possono tracciare come una linea prima di riempirsi. Questa animazione apre il sito, e qui puoi rivederla.',
   replayTheStroke: 'Rivedi il tratto',
   fromTheSketchbook: 'Dal quaderno',
   openSketch: 'Apri lo sketch',
@@ -294,7 +296,8 @@ const IT: UiStrings = {
   kOr: 'o',
   sketchesNote:
     "Queste tavole sono rielaborazioni generate con l'IA. Partono dagli schizzi a mano fatti durante il progetto, di cui mantengono idee, composizione e annotazioni.",
-  sketchLogo: 'Esplorazione del logo: dalla S tipografica al tratto con la scia',
+  sketchLogo:
+    'Dove è iniziato: l’esplorazione del logo di Skyward, dalla S tipografica al tratto con la scia',
   sketchGalaxy: 'Wireframe della mappa-galassia',
   sketchFlow: 'Flusso di navigazione tra pianeti',
   sketchGrid: 'Griglia e layout delle pagine',

@@ -6,14 +6,14 @@ const EN = { ...ENGINE_STRINGS.en, ...UI_STRINGS.en };
 const IT = { ...ENGINE_STRINGS.it, ...UI_STRINGS.it };
 
 test.describe('deep links', () => {
-  test('opens the NightSky case study directly', async ({ page }) => {
-    await page.goto('/en/projects/personal-projects/nightsky');
+  test('opens the NightSky case study in the Lab directly', async ({ page }) => {
+    await page.goto('/en/lab/nightsky-design');
     await expect(page.getByRole('heading', { name: EN.caseJourney })).toBeVisible();
     await expect(page.getByRole('heading', { name: EN.fromTheSketchbook })).toBeAttached();
   });
 
   test('serves the Italian version on /it', async ({ page }) => {
-    await page.goto('/it/projects/personal-projects/nightsky');
+    await page.goto('/it/lab/nightsky-design');
     await expect(page.getByRole('heading', { name: IT.caseJourney })).toBeVisible();
     await expect(page.locator('html')).toHaveAttribute('lang', 'it');
   });
@@ -41,7 +41,7 @@ test.describe('galaxy map', () => {
     page,
   }) => {
     await page.goto('/en/projects/personal-projects/nightsky');
-    await expect(page.getByRole('heading', { name: EN.caseJourney })).toBeVisible();
+    await expect(page.getByRole('heading', { name: EN.whatIDid })).toBeVisible();
     await page.keyboard.press('Escape');
     await expect(page).toHaveURL(/\/en\/projects\/personal-projects$/);
     await page.keyboard.press('Escape');
@@ -94,6 +94,13 @@ test.describe('projects', () => {
     await expect(page).toHaveURL(/\/en\/projects\/txt-group$/);
   });
 
+  test('the NightSky project links to its design case study in the Lab', async ({ page }) => {
+    await page.goto('/en/projects/personal-projects/nightsky');
+    await page.getByRole('button', { name: /Design case study/ }).click();
+    await expect(page).toHaveURL(/\/en\/lab\/nightsky-design$/, { timeout: 15_000 });
+    await expect(page.getByRole('heading', { name: EN.caseJourney })).toBeVisible();
+  });
+
   test('related work on a skill opens the project', async ({ page }) => {
     await page.goto('/en/skills/front-end');
     await page.getByRole('button', { name: /Gucci/ }).click();
@@ -104,14 +111,14 @@ test.describe('projects', () => {
 test.describe('keyboard shortcuts', () => {
   test('opens with ? and closes with Esc without leaving the page', async ({ page, isMobile }) => {
     test.skip(isMobile, 'No keyboard on touch devices');
-    await page.goto('/en/projects/personal-projects/nightsky');
+    await page.goto('/en/lab/nightsky-design');
     await expect(page.getByRole('heading', { name: EN.caseJourney })).toBeVisible();
     await page.keyboard.press('?');
     const dialog = page.getByRole('dialog', { name: EN.keyboardShortcuts });
     await expect(dialog).toBeVisible();
     await page.keyboard.press('Escape');
     await expect(dialog).toBeHidden();
-    await expect(page).toHaveURL(/\/en\/projects\/personal-projects\/nightsky$/);
+    await expect(page).toHaveURL(/\/en\/lab\/nightsky-design$/);
   });
 });
 
@@ -167,7 +174,9 @@ test.describe('mobile layout', () => {
       'projects',
       'projects/txt-group',
       'projects/nss-magazine/gucci',
+      'projects/personal-projects/nightsky',
       'skills/front-end',
+      'lab/nightsky-design',
       'contact',
       'contact/message',
     ]) {

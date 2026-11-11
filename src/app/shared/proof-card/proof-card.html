@@ -1,0 +1,8 @@
+@let r = item();
+<button class="proof-card" (click)="go($event)">
+  <span class="proof-planet" aria-hidden="true" [style.--background]="r?.bg ?? ''"></span
+  ><span class="proof-text"
+    ><span class="proof-meta">{{ r?.sub }}</span
+    ><span class="proof-name">{{ r?.label }}</span></span
+  >
+</button>

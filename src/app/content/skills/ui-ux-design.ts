@@ -111,10 +111,12 @@ export const uiUxDesign: PlanetData = {
       },
     },
     {
-      sys: 'projects',
-      planet: 'personal-projects',
-      project: 'nightsky',
-      label: 'NightSky',
+      sys: 'lab',
+      planet: 'nightsky-design',
+      label: {
+        en: 'NightSky case study',
+        it: 'Case study NightSky',
+      },
     },
   ],
 };
