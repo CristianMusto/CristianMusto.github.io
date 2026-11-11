@@ -4,7 +4,7 @@
   <div class="section-head">
     <span class="eyebrow">{{ t.logbook6Legs }}</span>
     <h2 class="leg-title">
-      {{ t.skywardSJourney }}
+      {{ t.caseJourney }}
     </h2>
   </div>
   <ol class="legs">
@@ -17,7 +17,7 @@
             {{ t.theBrief }}
           </h2>
           <p class="leg-text">
-            {{ t.skywardIsMyOwn }}
+            {{ t.caseBrief }}
           </p>
         </div>
         <div class="leg-demo">
@@ -26,7 +26,7 @@
               <dt class="brief-term">
                 {{ t.client }}
               </dt>
-              <dd class="brief-value">{{ t.skywardSelfInitiated }}</dd>
+              <dd class="brief-value">{{ t.caseClient }}</dd>
             </div>
             <div class="brief-row">
               <dt class="brief-term-tags">
@@ -100,8 +100,8 @@
                 class="type-sample"
                 [style.--font-variation-settings]="txt(v?.tyW)"
                 [style.--color]="txt(v?.tyHex)"
-                >Skyward</span
-              ><span class="type-tagline">{{ t.yourIdeaInOrbit }}</span
+                >NightSky</span
+              ><span class="type-tagline">{{ t.heroTitle }}</span
               ><span class="caption-mono"
                 >{{ txt(v?.tyCode) }} · {{ txt(v?.tyName) }} · {{ txt(v?.tyHexLabel) }} {{ t.contrast }}
                 {{ txt(v?.tyCr) }}</span

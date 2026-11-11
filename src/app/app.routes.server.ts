@@ -1,7 +1,7 @@
 import { RenderMode, type ServerRoute } from '@angular/ssr';
-import { CONTENT } from './content';
+import { CONTENT, PROJECTS } from './content';
 
-const LANGS = ['it', 'en'];
+const LANGS = ['en', 'it'];
 const SYSTEMS = Object.keys(CONTENT);
 
 // Every real URL is prerendered, so deep links work on GitHub Pages without a server.
@@ -29,6 +29,15 @@ export const serverRoutes: ServerRoute[] = [
         SYSTEMS.flatMap(system =>
           CONTENT[system].filter(p => !p.ghost).map(p => ({ lang, system, planet: p.key })),
         ),
+      );
+    },
+  },
+  {
+    path: ':lang/:system/:planet/:project',
+    renderMode: RenderMode.Prerender,
+    async getPrerenderParams() {
+      return LANGS.flatMap(lang =>
+        PROJECTS.map(p => ({ lang, system: 'projects', planet: p.parent, project: p.key })),
       );
     },
   },

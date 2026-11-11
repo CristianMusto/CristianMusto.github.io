@@ -41,6 +41,19 @@ export interface PlanetView {
   [field: string]: unknown;
 }
 
+/** A project detail page (a card in a company planet), resolved to one language. */
+export interface ProjectView {
+  key: string;
+  /** Key of the company planet that lists it. */
+  parent: string;
+  /** 'project' (standard detail page) or 'case' (case study). */
+  type: string;
+  name: string;
+  kind: string;
+  desc: string;
+  [field: string]: unknown;
+}
+
 /**
  * Engine state. Fields listed here are typed; the rest are still being typed (step 1b)
  * and live behind the index signature.
@@ -53,6 +66,8 @@ export interface EngineState {
   hover: number;
   /** Selected planet index inside the selected system, -1 for none. */
   psel: number;
+  /** Open project detail (key) on top of its company planet, or null. */
+  proj: string | null;
   phover: number;
   /** System the ship is currently at. */
   here: number;
@@ -132,12 +147,14 @@ export interface RouteTarget {
   system: number;
   /** Planet index, -1 for the system map. */
   planet: number;
+  /** Project key inside the planet, or null. */
+  project: string | null;
   /** The path when it does not exist (404), otherwise null. */
   bad: string | null;
 }
 
 /**
- * The part of SkywardEngine that typed modules rely on.
+ * The part of GalaxyEngine that typed modules rely on.
  * Grows as the remaining modules are typed.
  */
 export interface EngineCtx extends Engine {
@@ -193,10 +210,11 @@ export interface EngineCtx extends Engine {
   pathForState(): string | null;
   applyRoute(): void;
   lostTrap(on: boolean): void;
-  openDirect(system: number, planet: number): void;
-  openPage(planet: number, animate?: boolean): void;
+  openDirect(system: number, planet: number, project?: string | null): void;
+  openPage(planet: number, animate?: boolean, project?: string | null): void;
   closePage(): void;
   goPlanet(planet: number): void;
+  goProj(project: string | null): void;
   toContatti(): void;
   goHome(): void;
   back(): void;

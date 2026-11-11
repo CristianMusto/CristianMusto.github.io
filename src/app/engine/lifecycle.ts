@@ -7,8 +7,8 @@ import type { EngineCtx } from './types';
 
 type Quality = 'high' | 'low' | 'auto';
 
-const AUDIO_KEY = 'skyward.audio';
-const LANG_SWITCH_KEY = 'skyward.langSwitch';
+const AUDIO_KEY = 'nightsky.audio';
+const LANG_SWITCH_KEY = 'nightsky.langSwitch';
 /** Below this width, or with ≤ LOW_CORES cores, "auto" quality starts lower. */
 const SMALL_SCREEN = 760;
 const LOW_CORES = 4;
@@ -257,7 +257,7 @@ function openInitialView(ctx: LifecycleCtx): void {
     return;
   }
   if (route.system >= 0) {
-    ctx.openDirect(route.system, route.planet);
+    ctx.openDirect(route.system, route.planet, route.project);
     return;
   }
   if (!ctx.wantIntro()) {

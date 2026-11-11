@@ -4,7 +4,7 @@
  * tutorial, overlays (screenshot viewer, 404), contact form and case-study demos.
  */
 import { h } from './vnode';
-import { HOME, LOGO, PC, PL, SYS, STR, TILT, clamp, hexRgb } from './data';
+import { HOME, LOGO, PC, PJ, PL, SYS, STR, TILT, clamp, hexRgb } from './data';
 import type { EngineCtx, FormField, Palette, PlanetView, StarSystem } from './types';
 
 const MOBILE = 760;
@@ -24,12 +24,44 @@ const FORM_FIELDS: FormField[] = ['nome', 'email', 'msg'];
 type Ref<T extends Element = HTMLElement> = (el: T | null) => void;
 type Vals = Record<string, unknown>;
 
-/** Page content fields a planet can carry (see content/). */
+interface Link {
+  href: string;
+  label: string;
+  aria: string;
+}
+interface SkillItem {
+  n: string;
+  t: string;
+  d: string;
+  lv?: number;
+}
+interface RelatedRef {
+  sys: string;
+  planet: string;
+  project?: string;
+  label: string;
+}
+
+/** Page content fields a planet or project can carry (see content/). */
 interface PlanetContent extends PlanetView {
   rows?: unknown[];
   lead?: string;
   body?: string;
-  items?: unknown[];
+  itemsTitle?: string;
+  items?: SkillItem[];
+  related?: RelatedRef[];
+  facts?: unknown[];
+  site?: Link;
+  cardsTitle?: string;
+  factsTitle?: string;
+  stack?: string;
+  cover?: string;
+  coverAlt?: string;
+  link?: Link;
+  private?: boolean;
+  challenge?: string;
+  solution?: string;
+  result?: string;
   happens?: string;
   gets?: unknown[];
   blocks?: unknown[];
@@ -171,7 +203,7 @@ export const view = {
 
       ...cardVals(this, mobile, vh),
       cardOn: cardIndex >= 0 && !list && phase === 'map',
-      heroEyebrow: here === HOME ? STR.skywardDesignDevelopment : STR.youAreHere3 + SYS[here].name,
+      heroEyebrow: here === HOME ? STR.heroEyebrowHome : STR.youAreHere3 + SYS[here].name,
       sel: {
         ...cardSystem,
         cta:
@@ -442,8 +474,10 @@ function planetVals(
 
 const PHOTOS: Record<string, string> = {
   experience: 'assets/about/cristian-laptop.png',
-  approach: 'assets/about/cristian-idea.png',
+  education: 'assets/about/cristian-idea.png',
 };
+
+const planetBg = (c: Palette) => `radial-gradient(circle at 34% 30%,${c[0]} 0%,${c[1]} 40%,${c[2]} 100%)`;
 
 /** Planet page content, the step rail and prev / next navigation. */
 function pageVals(ctx: ViewCtx): Vals {
@@ -451,17 +485,23 @@ function pageVals(ctx: ViewCtx): Vals {
   const system = SYS[sel];
   const planets = (PL[system.id] ?? []) as PlanetContent[];
   const j = Math.max(0, psel);
-  const p = planets[j] ?? planets[0];
+  const planet = planets[j] ?? planets[0];
+  // A project of a company planet opens on top of it and borrows its colours.
+  const siblings = PJ.filter(q => q.parent === planet.key);
+  const project = siblings.find(q => q.key === ctx.state.proj);
+  const p = (project ? { ...project, c: planet.c } : planet) as PlanetContent;
+  const k = project ? siblings.indexOf(project) : -1;
   const prev = j > 0 ? planets[j - 1] : null;
   const next = planets[j + 1];
   const hasNext = !!next && !next.ghost;
   const isContact = system.id === 'contact';
   const palette = p.c ?? PC['ice'];
   const type = p.type || 'about';
+  const lvColor = (it: SkillItem, n: number) => ((it.lv ?? 0) >= n ? system.hex : 'transparent');
   const real = planets.filter(q => !q.ghost);
   const photoAlts: Record<string, string> = {
     experience: STR.cristianSMemojiBrown,
-    approach: STR.cristianSMemojiWith,
+    education: STR.cristianSMemojiWith,
   };
 
   const page = {
@@ -472,8 +512,9 @@ function pageVals(ctx: ViewCtx): Vals {
     isAbout: type === 'about',
     isContact: type === 'contact',
     isForm: type === 'form',
+    isCompany: type === 'company',
+    isProject: type === 'project',
     rows: p.rows || [],
-    goCase: () => ctx.openDirect(0, 0),
     rail:
       type === 'step'
         ? real.map((q, qi) => ({
@@ -504,22 +545,82 @@ function pageVals(ctx: ViewCtx): Vals {
     prevName: prev ? prev.name : '',
     nextIdx: hasNext ? pad2(j + 2) : isContact ? STR.galaxy : 'SYS-05',
     nextName: hasNext ? next.name : isContact ? STR.galaxyMap : STR.contact,
-    hasPhoto: type === 'about' && ['me', 'experience', 'approach'].includes(p.key),
+    hasPhoto: type === 'about' && ['me', 'experience', 'education'].includes(p.key),
     photoHex: palette[1],
     phMe: p.key === 'me',
     phExp: p.key === 'experience',
-    phAppr: p.key === 'approach',
+    phAppr: p.key === 'education',
     photoSrc: PHOTOS[p.key] || 'assets/about/cristian.png',
     photoAlt: photoAlts[p.key] || STR.cristianSMemojiWaving,
-    showIntro: !!p.lead,
-    lead: p.lead || '',
+    // Projects use the challenge as their lead.
+    showIntro: !!(p.lead || p.challenge),
+    lead: p.lead || p.challenge || '',
     body: p.body || '',
     hasBody: !!p.body,
-    items: p.items || [],
+    itemsTitle: p.itemsTitle || '',
+    items: (p.items || []).map(it => ({
+      ...it,
+      hasLv: !!it.lv,
+      d1: lvColor(it, 1),
+      d2: lvColor(it, 2),
+      d3: lvColor(it, 3),
+    })),
+    related: (p.related || []).map(r => {
+      const si = SYS.findIndex(s => s.id === r.sys);
+      const list = PL[r.sys] ?? [];
+      const pj = list.findIndex(q => q.key === r.planet);
+      const target = list[pj];
+      return {
+        label: r.label,
+        sub: (si >= 0 ? SYS[si].code + ' · ' : '') + (target?.name ?? ''),
+        bg: planetBg(target?.c ?? (PC['ice'] as Palette)),
+        go: () => ctx.openDirect(si, Math.max(0, pj), r.project ?? null),
+      };
+    }),
+    hasRelated: !!p.related?.length,
+    // Company planet: project cards and role facts
+    cardsTitle: p.cardsTitle || '',
+    factsTitle: p.factsTitle || '',
+    facts: p.facts || [],
+    cards: project
+      ? []
+      : siblings.map(q => ({
+          ...q,
+          open: () => ctx.goProj(q.key),
+        })),
+    hasSite: !!p.site,
+    site: p.site ?? null,
+    // Project detail
+    solution: p.solution || '',
+    result: p.result || '',
+    link: p.link ?? null,
+    hasLink: !!p.link,
+    isPrivate: !!p.private,
+    cover: type === 'project' ? p.cover || '' : '',
+    coverAlt: p.coverAlt || '',
     happens: p.happens || '',
     gets: p.gets || [],
     blocks: p.blocks || [],
   };
+  if (project) {
+    const pv = siblings[k - 1];
+    const nv = siblings[k + 1];
+    Object.assign(page, {
+      idx: pad2(k + 1),
+      total: pad2(siblings.length),
+      sysName: system.name + ' · ' + planet.name,
+      hasPrev: true,
+      prevIdx: pv ? pad2(k) : '',
+      prevName: pv ? pv.name : planet.name,
+      nextIdx: nv ? pad2(k + 2) : '',
+      nextName: nv ? nv.name : planet.name,
+    });
+    return {
+      page,
+      pagePrev: () => ctx.goProj(pv ? pv.key : null),
+      pageNext: () => ctx.goProj(nv ? nv.key : null),
+    };
+  }
   return {
     page,
     pagePrev: () => ctx.goPlanet(j - 1),
@@ -780,13 +881,12 @@ function logoDemo(play: number) {
       key: 'lg' + play,
       viewBox: '0 0 1000 1000',
       role: 'img',
-      'aria-label': STR.skywardLogo,
+      'aria-label': STR.logoLabel,
       style: { width: '100%', height: '100%' },
     },
     h(
       'g',
       {
-        transform: 'matrix(1.577362,0,0,1.577362,-316.787463,-268.230134)',
         fill: '#F2EEE6',
         fillOpacity: 0,
         stroke: SYS[1].hex,
@@ -817,8 +917,8 @@ function switchLanguage(ctx: ViewCtx, e: MouseEvent): void {
   const href = (e.currentTarget as HTMLElement).getAttribute('href') ?? '';
   const to = /^it\//.test(href) ? 'it' : 'en';
   try {
-    localStorage.setItem('skyward.lang', to);
-    sessionStorage.setItem('skyward.langSwitch', '1');
+    localStorage.setItem('nightsky.lang', to);
+    sessionStorage.setItem('nightsky.langSwitch', '1');
   } catch {
     /* storage blocked */
   }

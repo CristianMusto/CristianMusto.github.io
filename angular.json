@@ -7,7 +7,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "skyward": {
+    "nightsky": {
       "projectType": "application",
       "root": "",
       "sourceRoot": "src",
@@ -60,10 +60,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "skyward:build:production"
+              "buildTarget": "nightsky:build:production"
             },
             "development": {
-              "buildTarget": "skyward:build:development"
+              "buildTarget": "nightsky:build:development"
             }
           },
           "defaultConfiguration": "development"

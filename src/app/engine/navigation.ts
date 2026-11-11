@@ -131,7 +131,7 @@ export const navigation = {
     this.orb = [];
     this.orb0 = null;
     this.ospd = 1;
-    this.setState({ psel: -1, phover: -1, landMsg: '' });
+    this.setState({ psel: -1, proj: null, phover: -1, landMsg: '' });
 
     this.tgt.dist = ARRIVE_DIST;
     this.cam.dist = this.reduced ? ARRIVE_DIST : EMERGE_DIST;

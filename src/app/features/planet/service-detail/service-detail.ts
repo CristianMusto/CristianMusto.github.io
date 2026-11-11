@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ViewPart } from '../../../shared/view-part';
 
-/** Service planet: lead, included items, related work. */
+/** Skill planet: skills with their level, and related work. */
 @Component({
   selector: 'sky-service-detail',
   imports: [],

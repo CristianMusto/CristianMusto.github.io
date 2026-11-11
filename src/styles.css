@@ -130,9 +130,9 @@
   --color-error: #ff8fb1;
   /* One colour per star system */
   --color-home: #ffb38a;
-  --color-work: #7fe6f2;
-  --color-services: #ffd27a;
-  --color-process: #ff7a6b;
+  --color-projects: #7fe6f2;
+  --color-skills: #ffd27a;
+  --color-lab: #ff7a6b;
   --color-about: #8cf0a0;
   --color-contact: #c3a6ff;
   /* Same colours as "r g b" channels, for rgb(var(--rgb-x) / alpha) */
@@ -142,7 +142,7 @@
   --rgb-panel: 21 19 46;
   --rgb-panel-hover: 36 31 77;
   --rgb-black: 0 0 0;
-  --rgb-work: 127 230 242;
+  --rgb-projects: 127 230 242;
   /* Type */
   --font-display: 'Bricolage Grotesque', sans-serif;
   --font-text: 'Hanken Grotesk', sans-serif;

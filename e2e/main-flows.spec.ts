@@ -6,15 +6,15 @@ const EN = { ...ENGINE_STRINGS.en, ...UI_STRINGS.en };
 const IT = { ...ENGINE_STRINGS.it, ...UI_STRINGS.it };
 
 test.describe('deep links', () => {
-  test('opens the Skyward case study directly', async ({ page }) => {
-    await page.goto('/en/work/skyward');
-    await expect(page.getByRole('heading', { name: EN.skywardSJourney })).toBeVisible();
+  test('opens the NightSky case study directly', async ({ page }) => {
+    await page.goto('/en/projects/personal-projects/nightsky');
+    await expect(page.getByRole('heading', { name: EN.caseJourney })).toBeVisible();
     await expect(page.getByRole('heading', { name: EN.fromTheSketchbook })).toBeAttached();
   });
 
   test('serves the Italian version on /it', async ({ page }) => {
-    await page.goto('/it/work/skyward');
-    await expect(page.getByRole('heading', { name: IT.skywardSJourney })).toBeVisible();
+    await page.goto('/it/projects/personal-projects/nightsky');
+    await expect(page.getByRole('heading', { name: IT.caseJourney })).toBeVisible();
     await expect(page.locator('html')).toHaveAttribute('lang', 'it');
   });
 
@@ -29,19 +29,23 @@ test.describe('galaxy map', () => {
     await page.goto('/en');
     await page.getByRole('button', { name: EN.skip }).click();
     // System labels become visible on the first map frame; a hidden button cannot take focus.
-    const work = page.getByRole('button', { name: new RegExp('^' + EN.work) }).first();
+    const work = page.getByRole('button', { name: new RegExp('^' + EN.projects) }).first();
     await expect(work).toBeVisible();
     await page.keyboard.press('ArrowRight');
     await expect(work).toBeFocused();
     await page.keyboard.press('Enter');
-    await expect(page).toHaveURL(/\/en\/work$/, { timeout: 15_000 });
+    await expect(page).toHaveURL(/\/en\/projects$/, { timeout: 15_000 });
   });
 
-  test('Escape from a planet page returns to the system, then to the map', async ({ page }) => {
-    await page.goto('/en/work/skyward');
-    await expect(page.getByRole('heading', { name: EN.skywardSJourney })).toBeVisible();
+  test('Escape from a project returns to its company, then to the system, then to the map', async ({
+    page,
+  }) => {
+    await page.goto('/en/projects/personal-projects/nightsky');
+    await expect(page.getByRole('heading', { name: EN.caseJourney })).toBeVisible();
     await page.keyboard.press('Escape');
-    await expect(page).toHaveURL(/\/en\/work$/);
+    await expect(page).toHaveURL(/\/en\/projects\/personal-projects$/);
+    await page.keyboard.press('Escape');
+    await expect(page).toHaveURL(/\/en\/projects$/);
     // Inside a system the planet stays selected: the first Esc deselects it, the second leaves.
     await page.keyboard.press('Escape');
     await page.keyboard.press('Escape');
@@ -55,7 +59,7 @@ test.describe('galaxy map', () => {
     const contact = page.getByRole('button', { name: EN.heroWriteMe });
 
     await work.click();
-    await expect(page).toHaveURL(/\/en\/work$/, { timeout: 15_000 });
+    await expect(page).toHaveURL(/\/en\/projects$/, { timeout: 15_000 });
     await page.keyboard.press('Escape');
     await expect(page).toHaveURL(/\/en\/?$/);
 
@@ -66,28 +70,48 @@ test.describe('galaxy map', () => {
     await expect(page).toHaveURL(/\/en\/?$/);
 
     await work.click();
-    await expect(page).toHaveURL(/\/en\/work$/, { timeout: 15_000 });
+    await expect(page).toHaveURL(/\/en\/projects$/, { timeout: 15_000 });
   });
 
   test('browser back follows the engine history', async ({ page }) => {
-    await page.goto('/en/work');
-    await page.goto('/en/work/skyward');
+    await page.goto('/en/projects/personal-projects');
+    await page.goto('/en/projects/personal-projects/nightsky');
     await page.goBack();
-    await expect(page).toHaveURL(/\/en\/work$/);
+    await expect(page).toHaveURL(/\/en\/projects\/personal-projects$/);
+  });
+});
+
+test.describe('projects', () => {
+  test('a company card opens its project and the back button returns to the company', async ({ page }) => {
+    await page.goto('/en/projects/txt-group');
+    await page.getByRole('button', { name: EN.viewProject }).first().click();
+    await expect(page).toHaveURL(/\/en\/projects\/txt-group\/component-library$/);
+    await expect(page.getByRole('heading', { name: EN.whatIDid })).toBeVisible();
+    await page
+      .getByRole('button', { name: /TXT Group/ })
+      .first()
+      .click();
+    await expect(page).toHaveURL(/\/en\/projects\/txt-group$/);
+  });
+
+  test('related work on a skill opens the project', async ({ page }) => {
+    await page.goto('/en/skills/front-end');
+    await page.getByRole('button', { name: /Gucci/ }).click();
+    await expect(page).toHaveURL(/\/en\/projects\/nss-magazine\/gucci$/);
   });
 });
 
 test.describe('keyboard shortcuts', () => {
   test('opens with ? and closes with Esc without leaving the page', async ({ page, isMobile }) => {
     test.skip(isMobile, 'No keyboard on touch devices');
-    await page.goto('/en/work/skyward');
-    await expect(page.getByRole('heading', { name: EN.skywardSJourney })).toBeVisible();
+    await page.goto('/en/projects/personal-projects/nightsky');
+    await expect(page.getByRole('heading', { name: EN.caseJourney })).toBeVisible();
     await page.keyboard.press('?');
     const dialog = page.getByRole('dialog', { name: EN.keyboardShortcuts });
     await expect(dialog).toBeVisible();
     await page.keyboard.press('Escape');
     await expect(dialog).toBeHidden();
-    await expect(page).toHaveURL(/\/en\/work\/skyward$/);
+    await expect(page).toHaveURL(/\/en\/projects\/personal-projects\/nightsky$/);
   });
 });
 
@@ -105,7 +129,7 @@ test.describe('mobile layout', () => {
     const overflow = await page.evaluate(() => {
       const vw = document.documentElement.clientWidth;
       const wide = [...document.querySelectorAll<HTMLElement>('body *')]
-        .filter((el) => {
+        .filter(el => {
           const r = el.getBoundingClientRect();
           if (!r.width || !r.height) return false;
           for (let p = el.parentElement; p; p = p.parentElement) {
@@ -114,7 +138,7 @@ test.describe('mobile layout', () => {
           }
           return r.right > vw + 1 || r.left < -1;
         })
-        .map((el) => el.className || el.tagName);
+        .map(el => el.className || el.tagName);
       return { scroll: document.documentElement.scrollWidth - vw, wide: wide.slice(0, 5) };
     });
     expect(overflow.scroll, 'page scrolls sideways').toBeLessThanOrEqual(0);
@@ -139,7 +163,14 @@ test.describe('mobile layout', () => {
       await noHorizontalOverflow(page);
     });
 
-    for (const path of ['work', 'work/skyward', 'contact', 'contact/message']) {
+    for (const path of [
+      'projects',
+      'projects/txt-group',
+      'projects/nss-magazine/gucci',
+      'skills/front-end',
+      'contact',
+      'contact/message',
+    ]) {
       test(`/${lang}/${path} has no sideways scroll`, async ({ page, isMobile }) => {
         test.skip(!isMobile, 'Mobile layout only');
         await page.goto(`/${lang}/${path}`);

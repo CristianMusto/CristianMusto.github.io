@@ -1,31 +1,31 @@
 import { DOCUMENT } from '@angular/common';
 import { Injectable, inject } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
-import { planetsFor, type Lang } from '../content';
+import { planetsFor, projectsFor, type Lang } from '../content';
 import { ENGINE_STRINGS, type EngineStrings } from '../i18n/engine-strings';
 
 /** Public address of the deployed site (GitHub Pages). */
-export const SITE_URL = 'https://cristianmusto.github.io/SkywardStudio';
+export const SITE_URL = 'https://cristianmusto.github.io';
 const OG_DEFAULT = 'assets/og-image.png';
-const OG_CASE = 'assets/og-skyward-case.png';
+const SITE_NAME = 'NightSky';
 const AUTHOR = 'Cristian Musto';
 
 /** Name and description string keys for each system. */
 const SYSTEMS: Record<string, [keyof EngineStrings, keyof EngineStrings]> = {
-  work: ['work', 'selectedProjectsStartingWith'],
-  services: ['services', 'webDesignUiUx'],
-  process: ['process', 'fourStagesFromThe'],
-  about: ['about', 'whoIAmAnd'],
-  contact: ['contact', 'tellMeAboutYour'],
+  projects: ['projects', 'projectsDesc'],
+  skills: ['skills', 'skillsDesc'],
+  lab: ['lab', 'labDesc'],
+  about: ['about', 'aboutDesc'],
+  contact: ['contact', 'contactDesc'],
 };
 
 const TAGLINE: Record<Lang, string> = {
-  it: 'Skyward · La tua idea, in orbita.',
-  en: 'Skyward · Your idea, in orbit.',
+  it: 'NightSky · Cristian Musto, software developer e UI/UX designer',
+  en: 'NightSky · Cristian Musto, software developer and UI/UX designer',
 };
 const SITE_DESCRIPTION: Record<Lang, string> = {
-  it: 'Cristian Musto, designer e web developer. Siti sofisticati e moderni, dal primo schizzo al lancio.',
-  en: 'Cristian Musto, designer and web developer. Sophisticated, modern websites, from the first sketch to launch.',
+  it: 'Cristian Musto, software developer e UI/UX designer. Applicazioni web con Angular e .NET, e le interfacce su cui girano.',
+  en: 'Cristian Musto, software developer and UI/UX designer. Web applications built with Angular and .NET, and the interfaces they run on.',
 };
 
 interface PlanetText {
@@ -45,16 +45,21 @@ export interface PageSeo {
   jsonLd: Record<string, unknown>[];
 }
 
-/** Title, description and structured data for an engine path ('/', '/work', '/work/skyward'). */
+/** Title, description and structured data for an engine path ('/', '/skills', '/projects/txt-group/erp-database'). */
 export function seoFor(lang: Lang, path: string): PageSeo {
   const str = ENGINE_STRINGS[lang];
-  const [systemId, planetKey] = path.split('/').filter(Boolean);
+  const [systemId, planetKey, projectKey] = path.split('/').filter(Boolean);
   const url = `${SITE_URL}/${lang}${path === '/' ? '/' : path}`;
-  const person = { '@type': 'Person', name: AUTHOR, jobTitle: 'Designer & web developer', url: SITE_URL };
+  const person = {
+    '@type': 'Person',
+    name: AUTHOR,
+    jobTitle: 'Software developer & UI/UX designer',
+    url: SITE_URL,
+  };
   const site = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'Skyward',
+    name: SITE_NAME,
     url: `${SITE_URL}/${lang}/`,
     inLanguage: lang,
     author: person,
@@ -66,10 +71,17 @@ export function seoFor(lang: Lang, path: string): PageSeo {
   const systemName = str[keys[0]];
   const planets = (planetsFor(lang)[systemId] ?? []) as unknown as PlanetText[];
   const planet = planetKey ? planets.find(p => p.key === planetKey && !p.ghost) : undefined;
+  const project =
+    planet && projectKey
+      ? (projectsFor(lang) as unknown as (PlanetText & { parent: string; challenge?: string })[]).find(
+          q => q.key === projectKey && q.parent === planet.key,
+        )
+      : undefined;
   const crumbs = [
-    { name: 'Skyward', item: `${SITE_URL}/${lang}/` },
+    { name: SITE_NAME, item: `${SITE_URL}/${lang}/` },
     { name: systemName, item: `${SITE_URL}/${lang}/${systemId}` },
-    ...(planet ? [{ name: planet.name, item: url }] : []),
+    ...(planet ? [{ name: planet.name, item: `${SITE_URL}/${lang}/${systemId}/${planet.key}` }] : []),
+    ...(project ? [{ name: project.name, item: url }] : []),
   ];
   const breadcrumb = {
     '@context': 'https://schema.org',
@@ -78,30 +90,35 @@ export function seoFor(lang: Lang, path: string): PageSeo {
   };
   if (!planet) {
     return {
-      title: `${systemName} · Skyward`,
+      title: `${systemName} · ${SITE_NAME}`,
       description: str[keys[1]],
       image: OG_DEFAULT,
       jsonLd: [site, breadcrumb],
     };
   }
-  const description = planet.lead || planet.desc;
   const jsonLd: Record<string, unknown>[] = [site, breadcrumb];
-  if (planet.type === 'case') {
+  if (project) {
+    const description = project.challenge || project.desc;
     jsonLd.push({
       '@context': 'https://schema.org',
       '@type': 'CreativeWork',
-      name: planet.name,
+      name: project.name,
       description,
       url,
       inLanguage: lang,
       creator: person,
-      image: `${SITE_URL}/${OG_CASE}`,
     });
+    return {
+      title: `${project.name} · ${planet.name} · ${SITE_NAME}`,
+      description,
+      image: OG_DEFAULT,
+      jsonLd,
+    };
   }
   return {
-    title: `${planet.name} · ${systemName} · Skyward`,
-    description,
-    image: planet.type === 'case' ? OG_CASE : OG_DEFAULT,
+    title: `${planet.name} · ${systemName} · ${SITE_NAME}`,
+    description: planet.lead || planet.desc,
+    image: OG_DEFAULT,
     jsonLd,
   };
 }
@@ -129,7 +146,7 @@ export class SeoService {
     this.link('canonical', url);
     this.link('alternate', `${SITE_URL}/it${suffix}`, 'it');
     this.link('alternate', `${SITE_URL}/en${suffix}`, 'en');
-    this.link('alternate', `${SITE_URL}/it${suffix}`, 'x-default');
+    this.link('alternate', `${SITE_URL}/en${suffix}`, 'x-default');
     this.jsonLd(seo.jsonLd);
   }
 

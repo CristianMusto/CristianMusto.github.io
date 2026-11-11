@@ -13,7 +13,7 @@ export interface ContactValues {
 
 export interface EngineDeps {
   send(values: ContactValues): Promise<boolean>;
-  /** Updates the URL for a new engine location ('/', '/work', '/work/skyward'). */
+  /** Updates the URL for a new engine location ('/', '/projects', '/projects/txt-group'). */
   navigate(path: string, replace: boolean): void;
   /** Full reload in the other language, keeping the current path. */
   switchLang(lang: 'it' | 'en', path: string): void;

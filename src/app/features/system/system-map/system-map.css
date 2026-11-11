@@ -47,7 +47,7 @@
 }
 
 .back-btn:focus-visible {
-  outline: 2px solid var(--color-work);
+  outline: 2px solid var(--color-projects);
   outline-offset: 3px;
 }
 
@@ -101,7 +101,7 @@
 }
 
 .lang-link:focus-visible {
-  outline: 2px solid var(--color-work);
+  outline: 2px solid var(--color-projects);
   outline-offset: 3px;
 }
 
@@ -127,7 +127,7 @@
 }
 
 .header-btn:focus-visible {
-  outline: 2px solid var(--color-work);
+  outline: 2px solid var(--color-projects);
   outline-offset: 3px;
 }
 
@@ -186,7 +186,7 @@
 }
 
 .planet-btn:focus-visible {
-  outline: 2px solid var(--color-work);
+  outline: 2px solid var(--color-projects);
   outline-offset: 3px;
 }
 
@@ -381,7 +381,7 @@
 }
 
 .index-btn:focus-visible {
-  outline: 2px solid var(--color-work);
+  outline: 2px solid var(--color-projects);
   outline-offset: 2px;
 }
 
@@ -453,7 +453,7 @@
 }
 
 .panel-close:focus-visible {
-  outline: 2px solid var(--color-work);
+  outline: 2px solid var(--color-projects);
   outline-offset: 1px;
 }
 
@@ -500,7 +500,7 @@
 }
 
 .panel-cta:focus-visible {
-  outline: 2px solid var(--color-work);
+  outline: 2px solid var(--color-projects);
   outline-offset: 3px;
 }
 
@@ -556,7 +556,7 @@
 }
 
 .sheet-close:focus-visible {
-  outline: 2px solid var(--color-work);
+  outline: 2px solid var(--color-projects);
   outline-offset: 1px;
 }
 
@@ -588,6 +588,6 @@
 }
 
 .sheet-cta:focus-visible {
-  outline: 2px solid var(--color-work);
+  outline: 2px solid var(--color-projects);
   outline-offset: 3px;
 }

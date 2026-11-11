@@ -3,7 +3,7 @@
  * lazy chunks (their file names change with every build), and GitHub Pages returns 404.
  * When that happens, reload once so the browser fetches the new index and chunks.
  */
-const RELOAD_KEY = 'skyward.chunkReload';
+const RELOAD_KEY = 'nightsky.chunkReload';
 const STALE_CHUNK =
   /Failed to fetch dynamically imported module|Importing a module script failed|error loading dynamically imported module/i;
 

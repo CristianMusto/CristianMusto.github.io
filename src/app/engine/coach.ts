@@ -4,7 +4,7 @@
  */
 import type { EngineCtx } from './types';
 
-const SEEN_KEY = 'skyward.coachSeen';
+const SEEN_KEY = 'nightsky.coachSeen';
 /** Interactions needed on a step before moving to the next one. */
 const ACTIONS_PER_STEP = 5;
 const LAST_STEP = 2;

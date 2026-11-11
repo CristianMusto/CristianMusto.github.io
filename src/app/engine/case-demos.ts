@@ -1,5 +1,5 @@
 /**
- * The two live demos in the Skyward case study: a small rotatable galaxy (leg 04) and a
+ * The two live demos in the NightSky case study: a small rotatable galaxy (leg 04) and a
  * replay of the jump between systems (leg 05). Both share one animation loop that pauses
  * while the canvases are off screen.
  */

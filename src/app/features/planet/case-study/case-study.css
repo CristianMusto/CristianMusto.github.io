@@ -53,7 +53,7 @@
   height: 13px;
   border-radius: 50%;
   background: var(--color-bg);
-  box-shadow: 0 0 12px rgb(var(--rgb-work) / 0.35);
+  box-shadow: 0 0 12px rgb(var(--rgb-projects) / 0.35);
   border: 1.5px solid var(--border);
 }
 
@@ -195,7 +195,7 @@
 }
 
 .btn-ghost:focus-visible {
-  outline: 2px solid var(--color-work);
+  outline: 2px solid var(--color-projects);
   outline-offset: 3px;
 }
 
@@ -257,7 +257,7 @@
 }
 
 .swatch:focus-visible {
-  outline: 2px solid var(--color-work);
+  outline: 2px solid var(--color-projects);
   outline-offset: 3px;
 }
 
@@ -288,7 +288,7 @@
 }
 
 .ty-w:focus-visible {
-  outline: 2px solid var(--color-work);
+  outline: 2px solid var(--color-projects);
   outline-offset: 3px;
 }
 
@@ -359,7 +359,7 @@
 }
 
 .system-chip:focus-visible {
-  outline: 2px solid var(--color-work);
+  outline: 2px solid var(--color-projects);
   outline-offset: 3px;
 }
 
@@ -406,7 +406,7 @@
 }
 
 .btn-primary:focus-visible {
-  outline: 2px solid var(--color-work);
+  outline: 2px solid var(--color-projects);
   outline-offset: 3px;
 }
 
@@ -444,21 +444,21 @@
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: var(--color-work);
+  background: var(--color-projects);
 }
 
 .color-dot-services {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: var(--color-services);
+  background: var(--color-skills);
 }
 
 .color-dot-process {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: var(--color-process);
+  background: var(--color-lab);
 }
 
 .color-dot-about {
@@ -530,7 +530,7 @@
 }
 
 .btn-outline:focus-visible {
-  outline: 2px solid var(--color-work);
+  outline: 2px solid var(--color-projects);
   outline-offset: 3px;
 }
 
@@ -594,7 +594,7 @@
 }
 
 .sketch-link:focus-visible {
-  outline: 2px solid var(--color-work);
+  outline: 2px solid var(--color-projects);
   outline-offset: 3px;
 }
 

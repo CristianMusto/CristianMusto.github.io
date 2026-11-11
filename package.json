@@ -1,12 +1,12 @@
 {
-  "name": "skyward",
+  "name": "nightsky",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build:pages": "ng build --base-href /SkywardStudio/",
+    "build:pages": "ng build --base-href /",
     "watch": "ng build --watch --configuration development",
     "format": "prettier --write \"src/**/*.{ts,html,css}\"",
     "format:check": "prettier --check \"src/**/*.{ts,html,css}\"",

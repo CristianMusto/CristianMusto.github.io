@@ -41,7 +41,10 @@ jobs:
         run: npm test
 
       - name: Install browsers
-        run: npx playwright install --with-deps chromium
+        # The ubuntu-24.04 runner already has Chromium's system libraries; --with-deps only adds extra
+        # fonts through apt, whose mirrors sometimes fail to resolve. If that happens, install the
+        # browser alone instead of failing the whole run.
+        run: npx playwright install --with-deps chromium || npx playwright install chromium
 
       - name: E2E tests
         run: npm run e2e
@@ -68,11 +71,11 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Build (prerendered, base /SkywardStudio/)
+      - name: Build (prerendered, base /)
         run: npm run build:pages
 
       - name: SPA fallback and disable Jekyll
-        working-directory: dist/skyward/browser
+        working-directory: dist/nightsky/browser
         run: |
           if [ -f index.csr.html ]; then cp index.csr.html 404.html; else cp index.html 404.html; fi
           touch .nojekyll
@@ -81,7 +84,7 @@ jobs:
 
       - uses: actions/upload-pages-artifact@v4
         with:
-          path: dist/skyward/browser
+          path: dist/nightsky/browser
 
   deploy:
     needs: build

@@ -2,7 +2,7 @@ import { Directive, input } from '@angular/core';
 import type { UiStrings } from '../i18n/ui-strings';
 
 /**
- * Values returned by SkywardEngine.renderVals().
+ * Values returned by GalaxyEngine.renderVals().
  * Kept as `any` until the engine is typed (step 1b): with an index signature,
  * strict templates would reject every `v?.name` access (TS4111).
  */

@@ -1,0 +1,74 @@
+@let v = vm();
+@let t = tr();
+@if (v?.page?.cover) {
+  <figure class="project-cover">
+    <img
+      [attr.src]="v?.page?.cover"
+      [attr.alt]="v?.page?.coverAlt"
+      width="1600"
+      height="1000"
+      loading="lazy"
+      decoding="async"
+    />
+  </figure>
+}
+<div class="project">
+  <div class="project-blocks">
+    <div class="block" [style.--hex]="txt(v?.page?.hex)">
+      <h3 class="block-title">{{ t.whatIDid }}</h3>
+      <p class="block-text">{{ txt(v?.page?.solution) }}</p>
+    </div>
+    <div class="block" [style.--hex]="txt(v?.page?.hex)">
+      <h3 class="block-title">{{ t.result }}</h3>
+      <p class="block-text">{{ txt(v?.page?.result) }}</p>
+    </div>
+  </div>
+  <div class="project-side">
+    <h2 class="section-title">{{ t.details }}</h2>
+    <dl class="facts">
+      @for (f of v?.page?.facts ?? []; track $index) {
+        <div class="fact">
+          <dt class="fact-key">{{ txt(f?.k) }}</dt>
+          <dd class="fact-value">{{ txt(f?.v) }}</dd>
+        </div>
+      }
+    </dl>
+    @if (v?.page?.hasLink) {
+      <a
+        class="visit"
+        [attr.href]="v?.page?.link?.href"
+        target="_blank"
+        rel="noopener noreferrer"
+        [attr.aria-label]="v?.page?.link?.aria"
+        [style.--hex]="txt(v?.page?.hex)"
+        ><span class="visit-text"
+          ><span class="visit-title">{{ t.visitProject }}</span
+          ><span class="visit-label">{{ txt(v?.page?.link?.label) }}</span></span
+        ><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+          <path d="M6 4h8v8M14 4L4 14" fill="none" stroke="currentColor" stroke-width="1.6"></path></svg
+      ></a>
+    }
+    @if (v?.page?.isPrivate) {
+      <p class="nda">
+        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+          <rect
+            x="3"
+            y="7"
+            width="10"
+            height="7"
+            rx="1.5"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.4"
+          ></rect>
+          <path
+            d="M5.5 7V5a2.5 2.5 0 015 0v2"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.4"
+          ></path></svg
+        ><span>{{ t.ndaNote }}</span>
+      </p>
+    }
+  </div>
+</div>

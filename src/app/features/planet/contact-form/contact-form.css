@@ -29,7 +29,7 @@
 }
 
 .nome:focus-visible {
-  outline: 2px solid var(--color-work);
+  outline: 2px solid var(--color-projects);
   outline-offset: 2px;
 }
 
@@ -53,7 +53,7 @@
 }
 
 .email:focus-visible {
-  outline: 2px solid var(--color-work);
+  outline: 2px solid var(--color-projects);
   outline-offset: 2px;
 }
 
@@ -78,7 +78,7 @@
 }
 
 .msg:focus-visible {
-  outline: 2px solid var(--color-work);
+  outline: 2px solid var(--color-projects);
   outline-offset: 2px;
 }
 
@@ -120,7 +120,7 @@
 }
 
 .btn-submit:focus-visible {
-  outline: 2px solid var(--color-work);
+  outline: 2px solid var(--color-projects);
   outline-offset: 3px;
 }
 

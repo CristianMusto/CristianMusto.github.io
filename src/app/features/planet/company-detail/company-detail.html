@@ -1,0 +1,93 @@
+@let v = vm();
+@let t = tr();
+<section class="company" aria-labelledby="sk-cards">
+  <h2 class="section-title" id="sk-cards">{{ txt(v?.page?.cardsTitle) }}</h2>
+  <div class="cards">
+    @for (c of v?.page?.cards ?? []; track c?.key) {
+      <article class="card">
+        @if (c?.cover) {
+          <img
+            class="card-cover"
+            [attr.src]="c?.cover"
+            [attr.alt]="c?.coverAlt"
+            width="1600"
+            height="1000"
+            loading="lazy"
+            decoding="async"
+          />
+        }
+        <span class="card-kind" [style.--color]="txt(v?.page?.hex)">{{ txt(c?.kind) }}</span>
+        <h3 class="card-name">{{ txt(c?.name) }}</h3>
+        <p class="card-text">{{ txt(c?.desc) }}</p>
+        <span class="card-stack">{{ txt(c?.stack) }}</span>
+        <div class="card-actions">
+          <button class="card-open" (click)="call(c?.open, $event)">
+            {{ t.viewProject }}
+            <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
+              <path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8"></path>
+            </svg>
+          </button>
+          @if (c?.link) {
+            <a
+              class="card-link"
+              [attr.href]="c?.link?.href"
+              target="_blank"
+              rel="noopener noreferrer"
+              [attr.aria-label]="c?.link?.aria"
+              [style.--hex]="txt(v?.page?.hex)"
+              >{{ txt(c?.link?.label) }}
+              <svg width="14" height="14" viewBox="0 0 18 18" aria-hidden="true">
+                <path d="M6 4h8v8M14 4L4 14" fill="none" stroke="currentColor" stroke-width="1.8"></path></svg
+            ></a>
+          } @else if (c?.private) {
+            <span class="card-private">
+              <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
+                <rect
+                  x="3"
+                  y="7"
+                  width="10"
+                  height="7"
+                  rx="1.5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.4"
+                ></rect>
+                <path
+                  d="M5.5 7V5a2.5 2.5 0 015 0v2"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.4"
+                ></path>
+              </svg>
+              {{ t.privateNda }}
+            </span>
+          }
+        </div>
+      </article>
+    }
+  </div>
+</section>
+<section class="company" aria-labelledby="sk-facts">
+  <h2 class="section-title" id="sk-facts">{{ txt(v?.page?.factsTitle) }}</h2>
+  <dl class="facts">
+    @for (f of v?.page?.facts ?? []; track $index) {
+      <div class="fact">
+        <dt class="fact-key">{{ txt(f?.k) }}</dt>
+        <dd class="fact-value">{{ txt(f?.v) }}</dd>
+      </div>
+    }
+  </dl>
+  @if (v?.page?.hasSite) {
+    <a
+      class="site-link"
+      [attr.href]="v?.page?.site?.href"
+      target="_blank"
+      rel="noopener noreferrer"
+      [attr.aria-label]="v?.page?.site?.aria"
+      [style.--hex]="txt(v?.page?.hex)"
+      >{{ txt(v?.page?.site?.label) }}
+      <svg width="14" height="14" viewBox="0 0 18 18" aria-hidden="true">
+        <path d="M6 4h8v8M14 4L4 14" fill="none" stroke="currentColor" stroke-width="1.8"></path></svg
+    ></a>
+  }
+</section>

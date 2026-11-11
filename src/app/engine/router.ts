@@ -1,10 +1,10 @@
 /**
  * Routing bridge between the engine and the Angular Router.
- * Paths have no language prefix: '/', '/work', '/work/skyward'.
+ * Paths have no language prefix: '/', '/projects', '/projects/txt-group', '/projects/txt-group/erp-database'.
  * - Engine -> URL: syncRoute() after every state change.
  * - URL -> engine: onRoute() on links, back/forward and deep links.
  */
-import { DHOME, HOME, PC, PL, STR, SYS, rnd, slug } from './data';
+import { DHOME, HOME, PC, PJ, PL, STR, SYS, rnd, slug } from './data';
 import { arrivalStarSize, snapshotCanvas } from './navigation';
 import type { EngineCtx, PlanetView, RouteTarget } from './types';
 
@@ -19,21 +19,26 @@ export const router = {
     } catch {
       /* malformed escape: treat as unknown path */
     }
-    const [systemId, planetKey] = path.split('/');
+    const [systemId, planetKey, projectKey] = path.split('/');
     const system = SYS.findIndex(s => s.id === systemId);
     if (system < 0 || system === HOME) {
       const known = !systemId || systemId === 'home';
-      return { system: -1, planet: -1, bad: known ? null : path };
+      return { system: -1, planet: -1, project: null, bad: known ? null : path };
     }
     const planet = planetKey
       ? (PL[systemId] ?? []).findIndex(p => !p.ghost && planetSlug(p) === planetKey)
       : -1;
-    return { system, planet, bad: planetKey && planet < 0 ? path : null };
+    const parent = planet >= 0 ? planetSlug(PL[systemId][planet]) : '';
+    const project = projectKey
+      ? (PJ.find(q => q.key === projectKey && q.parent === parent)?.key ?? null)
+      : null;
+    const bad = (planetKey && planet < 0) || (projectKey && !project) ? path : null;
+    return { system, planet, project, bad };
   },
 
   /** Path for the current state, or null while in transit (intro, jump, black hole). */
   pathForState(this: EngineCtx): string | null {
-    const { intro, phase, sel, psel } = this.state;
+    const { intro, phase, sel, psel, proj } = this.state;
     if (intro || this.warp || this.egg) return null;
     if (phase === 'map') return '/';
     if (sel < 0) return null;
@@ -41,7 +46,8 @@ export const router = {
     if (phase === 'arrive') return '/' + id;
     if (phase === 'page') {
       const planet = (PL[id] ?? [])[psel];
-      return planet ? `/${id}/${planetSlug(planet)}` : '/' + id;
+      if (!planet) return '/' + id;
+      return `/${id}/${planetSlug(planet)}` + (proj ? '/' + proj : '');
     }
     return null;
   },
@@ -64,7 +70,7 @@ export const router = {
     const st = this.state;
     if (st.intro || this.warp || this.egg || st.phase === 'jump') return;
 
-    const { system, planet, bad } = this.parseRoute();
+    const { system, planet, project, bad } = this.parseRoute();
     if (bad) {
       this.setState({ lost: '/' + bad });
       return;
@@ -85,7 +91,7 @@ export const router = {
     }
     if (st.phase === 'map') {
       if (planet >= 0) {
-        this.openDirect(system, planet);
+        this.openDirect(system, planet, project);
       } else {
         this.setState({ hover: -1 });
         this.select(system);
@@ -95,14 +101,15 @@ export const router = {
     }
     if (st.sel === system) {
       if (planet >= 0) {
-        if (st.phase === 'page') this.goPlanet(planet);
-        else this.openPage(planet, true);
+        if (st.phase !== 'page') this.openPage(planet, true, project);
+        else if (st.psel !== planet) this.setState({ psel: planet, proj: project });
+        else if (st.proj !== project) this.goProj(project);
       } else if (st.phase === 'page') {
         this.closePage();
       }
       return;
     }
-    this.openDirect(system, planet);
+    this.openDirect(system, planet, project);
   },
 
   /** Makes everything except the 404 dialog inert (on) or restores it (off). */
@@ -126,7 +133,7 @@ export const router = {
   },
 
   /** Jumps straight to a system (and optionally a planet), with no warp. Used for deep links. */
-  openDirect(this: EngineCtx, system: number, planet: number): void {
+  openDirect(this: EngineCtx, system: number, planet: number, project: string | null = null): void {
     const pos = SYS[system].p;
     this.orb = [];
     this.orb0 = null;
@@ -143,6 +150,7 @@ export const router = {
         list: false,
         phase: onPage ? 'page' : 'arrive',
         psel: planet,
+        proj: onPage ? project : null,
         phover: -1,
         visited: { ...st.visited, [system]: true },
         live: (onPage ? PL[SYS[system].id][planet].name + ', ' : '') + SYS[system].name + '.',
@@ -156,13 +164,13 @@ export const router = {
   },
 
   /** Opens a planet page; with animate, the planet grows to fill the screen first. */
-  openPage(this: EngineCtx, index: number, animate = false): void {
+  openPage(this: EngineCtx, index: number, animate = false, project: string | null = null): void {
     const planet = (PL[SYS[this.state.sel].id] ?? [])[index];
     if (!planet || planet.ghost) return;
 
     const show = () =>
       this.setState(
-        { phase: 'page', psel: index, landMsg: '', live: STR.landingOn + planet.name + '.' },
+        { phase: 'page', psel: index, proj: project, landMsg: '', live: STR.landingOn + planet.name + '.' },
         () => {
           if (this.pageEl) this.pageEl.scrollTop = 0;
           setTimeout(() => this.pageTitle?.focus({ preventScroll: true }), 80);
@@ -215,6 +223,10 @@ export const router = {
   },
 
   closePage(this: EngineCtx): void {
+    if (this.state.proj) {
+      this.goProj(null);
+      return;
+    }
     const system = SYS[this.state.sel];
     this.setState({ phase: 'arrive', live: STR.system + (system?.name ?? '') + '.' }, () =>
       setTimeout(() => this.arrive?.focus({ preventScroll: true }), 40),
@@ -222,7 +234,16 @@ export const router = {
   },
 
   goPlanet(this: EngineCtx, index: number): void {
-    this.setState({ psel: index }, () => {
+    this.setState({ psel: index, proj: null }, () => {
+      if (this.pageEl) this.pageEl.scrollTop = 0;
+      this.pageTitle?.focus({ preventScroll: true });
+    });
+  },
+
+  /** Opens a project of the current company planet (null goes back to the planet). */
+  goProj(this: EngineCtx, project: string | null): void {
+    const item = project ? PJ.find(q => q.key === project) : undefined;
+    this.setState({ proj: item ? item.key : null, live: item ? STR.landingOn + item.name + '.' : '' }, () => {
       if (this.pageEl) this.pageEl.scrollTop = 0;
       this.pageTitle?.focus({ preventScroll: true });
     });
@@ -231,7 +252,7 @@ export const router = {
   /** Leaves the current system and jumps to Contact. */
   toContatti(this: EngineCtx): void {
     const contact = SYS.findIndex(s => s.id === 'contact');
-    this.setState({ psel: -1, phase: 'map', here: this.state.sel, sel: -1 }, () => {
+    this.setState({ psel: -1, proj: null, phase: 'map', here: this.state.sel, sel: -1 }, () => {
       this.select(contact);
       setTimeout(() => this.jump(), 60);
     });
@@ -292,6 +313,7 @@ export const router = {
     this.setState(
       {
         psel: -1,
+        proj: null,
         phover: -1,
         landMsg: '',
         phase: 'map',

@@ -108,6 +108,12 @@
     @if (v?.page?.isCase) {
       <sky-case-study [v]="v" [t]="t"></sky-case-study>
     }
+    @if (v?.page?.isCompany) {
+      <sky-company-detail [v]="v" [t]="t"></sky-company-detail>
+    }
+    @if (v?.page?.isProject) {
+      <sky-project-detail [v]="v" [t]="t"></sky-project-detail>
+    }
     @if (v?.page?.isService) {
       <sky-service-detail [v]="v" [t]="t"></sky-service-detail>
     }

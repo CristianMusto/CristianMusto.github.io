@@ -57,7 +57,7 @@
 }
 
 .boot-ok {
-  color: var(--color-work);
+  color: var(--color-projects);
 }
 
 .boot-line-2 {
@@ -75,7 +75,7 @@
 }
 
 .boot-ready {
-  color: var(--color-services);
+  color: var(--color-skills);
 }
 
 .launch {
@@ -111,7 +111,7 @@
 }
 
 .launch-btn:focus-visible {
-  outline: 2px solid var(--color-work);
+  outline: 2px solid var(--color-projects);
   outline-offset: 4px;
 }
 
@@ -154,6 +154,6 @@
 }
 
 .skip-btn:focus-visible {
-  outline: 2px solid var(--color-work);
+  outline: 2px solid var(--color-projects);
   outline-offset: 3px;
 }

@@ -38,7 +38,7 @@
 }
 
 .rail-step:focus-visible {
-  outline: 2px solid var(--color-work);
+  outline: 2px solid var(--color-projects);
   outline-offset: 3px;
 }
 
