@@ -59,7 +59,7 @@ Indirizzi: `/en`, `/en/skills`, `/en/about/experience`, `/en/projects/txt-group/
 |---|---|---|
 | Projects | `content/projects/` | un pianeta per azienda (TXT Group, NSS Magazine) più «Personal projects»; i progetti sono in `projects/items.ts` |
 | Skills | `content/skills/` | aree di competenza, ogni voce con il livello `lv` (3 avanzato, 2 intermedio, 1 agli inizi) |
-| Lab | `content/lab/` | per ora solo «Work in progress» |
+| Lab | `content/lab/` | case study «Design di NightSky» (tipo `case`) |
 | About | `content/about/` | Me, Experience, Education |
 | Contact | `content/contact/` | Message (modulo), Find me (link) |
 

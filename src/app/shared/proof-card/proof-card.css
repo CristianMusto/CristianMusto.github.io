@@ -1,0 +1,51 @@
+.proof-card {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  min-height: 88px;
+  padding: 16px 18px;
+  border: 1px solid rgb(var(--rgb-text) / 0.18);
+  border-radius: 6px;
+  background: rgb(var(--rgb-panel) / 0.6);
+  color: var(--color-text);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+
+.proof-card:hover {
+  background: var(--color-panel-hover);
+  border-color: rgb(var(--rgb-text) / 0.5);
+}
+
+.proof-card:focus-visible {
+  outline: 2px solid var(--color-projects);
+  outline-offset: 3px;
+}
+
+.proof-planet {
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--background);
+}
+
+.proof-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.proof-meta {
+  font: 400 12px var(--font-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.proof-name {
+  font: 600 22px/1.1 var(--font-display);
+}

@@ -3,7 +3,7 @@ import type { ProjectData } from '../types';
 /**
  * Projects shown as cards in their company planet (parent) and opened as detail pages:
  * /:lang/projects/:company/:project. Order = order of the cards and of the page navigation.
- * type 'case' opens the case study (NightSky), 'project' the standard detail page.
+ * type 'project' opens the standard detail page ('case' would open a case study).
  */
 export const PROJECTS: ProjectData[] = [
   {
@@ -959,15 +959,15 @@ export const PROJECTS: ProjectData[] = [
   {
     key: 'nightsky',
     parent: 'personal-projects',
-    type: 'case',
+    type: 'project',
     name: 'NightSky',
     kind: {
-      en: 'Portfolio · 2026',
-      it: 'Portfolio · 2026',
+      en: 'Portfolio · 2026 – today',
+      it: 'Portfolio · 2026 – oggi',
     },
     desc: {
-      en: 'This site: identity, galaxy map and design system, designed and built from scratch.',
-      it: 'Questo sito: identità, mappa-galassia e design system, progettati e sviluppati da zero.',
+      en: 'This site: a portfolio where the home is a galaxy map, designed and built from scratch.',
+      it: 'Questo sito: un portfolio in cui la home è una mappa-galassia, progettato e sviluppato da zero.',
     },
     stack: 'Angular, TypeScript, Figma',
     cover: 'assets/projects/nightsky-mark.webp',
@@ -975,5 +975,71 @@ export const PROJECTS: ProjectData[] = [
       en: 'NightSky moon and star mark with the wordmark',
       it: 'Marchio NightSky con luna, stella e logotipo',
     },
+    link: {
+      href: 'https://github.com/CristianMusto/CristianMusto.github.io',
+      label: 'github.com/CristianMusto',
+      aria: {
+        en: 'NightSky source code on GitHub (opens in a new tab)',
+        it: 'Codice sorgente di NightSky su GitHub (si apre in una nuova scheda)',
+      },
+    },
+    facts: [
+      {
+        k: {
+          en: 'Type',
+          it: 'Tipo',
+        },
+        v: {
+          en: 'Personal project',
+          it: 'Progetto personale',
+        },
+      },
+      {
+        k: {
+          en: 'Role',
+          it: 'Ruolo',
+        },
+        v: {
+          en: 'Design and development',
+          it: 'Design e sviluppo',
+        },
+      },
+      {
+        k: {
+          en: 'Year',
+          it: 'Anno',
+        },
+        v: {
+          en: '2026 – today',
+          it: '2026 – oggi',
+        },
+      },
+      {
+        k: 'Stack',
+        v: 'Angular, TypeScript, Figma',
+      },
+    ],
+    challenge: {
+      en: 'My old portfolio was a React site that no longer showed what I do. I wanted one place for my work, skills and experience that also shows how I design.',
+      it: 'Il mio vecchio portfolio era un sito React che non raccontava più quello che faccio. Volevo un unico posto per lavori, competenze ed esperienza, che mostrasse anche come progetto.',
+    },
+    solution: {
+      en: 'I designed it in Figma and built it in Angular: the home is a galaxy map you can explore, with a list view for the same content, English and Italian, and every page prerendered.',
+      it: 'L’ho progettato in Figma e sviluppato in Angular: la home è una mappa-galassia da esplorare, con una vista a elenco per gli stessi contenuti, in inglese e italiano, e ogni pagina prerenderizzata.',
+    },
+    result: {
+      en: 'Live at cristianmusto.github.io. The design process is in the Lab.',
+      it: 'Online su cristianmusto.github.io. Il processo di design è nel Lab.',
+    },
+    related: [
+      {
+        sys: 'lab',
+        planet: 'nightsky-design',
+        label: {
+          en: 'Design case study',
+          it: 'Case study di design',
+        },
+      },
+    ],
   },
 ];

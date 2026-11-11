@@ -70,5 +70,11 @@
         ><span>{{ t.ndaNote }}</span>
       </p>
     }
+    @if (v?.page?.hasRelated) {
+      <h2 class="section-title related-title">{{ t.relatedWork }}</h2>
+      @for (r of v?.page?.related ?? []; track $index) {
+        <sky-proof-card [item]="r"></sky-proof-card>
+      }
+    }
   </div>
 </div>
