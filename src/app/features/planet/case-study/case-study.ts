@@ -18,7 +18,7 @@ export class CaseStudy extends ViewPart {
     try {
       sessionStorage.setItem('nightsky.dsReturn', location.pathname + location.search);
     } catch {
-      /* storage blocked: the back page falls back to the Italian case study */
+      /* storage blocked: the back page falls back to the case study in the last language used */
     }
   }
 }
