@@ -122,16 +122,16 @@ export const PROJECTS: ProjectData[] = [
       },
     ],
     challenge: {
-      en: 'Merchants had to go through a long registration to get POS terminals and accept meal vouchers.',
-      it: 'Gli esercenti dovevano affrontare una registrazione lunga per avere i POS e accettare i buoni pasto.',
+      en: 'Merchants had to go through a long registration, still on paper, to get POS terminals and accept meal vouchers.',
+      it: 'Gli esercenti dovevano affrontare una registrazione lunga e ancora su carta per avere i POS e accettare i buoni pasto.',
     },
     solution: {
       en: 'A step-by-step portal with validation next to each field, built in Angular on ASP.NET Core and EF Core APIs.',
       it: 'Un portale passo dopo passo con la validazione accanto a ogni campo, in Angular su API ASP.NET Core ed EF Core.',
     },
     result: {
-      en: '[To write]',
-      it: '[Da scrivere]',
+      en: 'Live and in testing with a group of selected merchants: registration is now fully online.',
+      it: 'Online e in fase di test con alcuni esercenti selezionati: la registrazione ora è tutta digitale.',
     },
   },
   {
@@ -244,16 +244,16 @@ export const PROJECTS: ProjectData[] = [
       },
     ],
     challenge: {
-      en: 'Agents needed a way to book visits for their clients on their own.',
-      it: 'Gli agenti avevano bisogno di prenotare in autonomia le visite per i loro clienti.',
+      en: 'Agents booked visits for their clients by phone or email, so details got lost along the way.',
+      it: 'Gli agenti prenotavano le visite per i clienti al telefono o via email, e i dettagli si perdevano per strada.',
     },
     solution: {
       en: 'A B2B portal I designed and built: the form data is saved to SQL Server, which emails a summary to the person who manages the visits.',
       it: 'Un portale B2B che ho progettato e sviluppato: i dati del modulo vengono salvati su SQL Server, che invia una mail di riepilogo alla responsabile delle visite.',
     },
     result: {
-      en: '[To write]',
-      it: '[Da scrivere]',
+      en: 'In use: visits are better organised and clients no longer get last-minute surprises.',
+      it: 'In uso: le visite sono più organizzate e i clienti non hanno più sorprese dell’ultimo minuto.',
     },
   },
   {
@@ -313,8 +313,8 @@ export const PROJECTS: ProjectData[] = [
       it: 'Un’app Angular con le liste e i moduli per ogni contratto.',
     },
     result: {
-      en: '[To write]',
-      it: '[Da scrivere]',
+      en: 'In use by the distributor.',
+      it: 'In uso presso il distributore.',
     },
   },
   {
@@ -326,12 +326,12 @@ export const PROJECTS: ProjectData[] = [
       it: 'Database del gestionale',
     },
     kind: {
-      en: 'Management software · 2023 – 2024',
-      it: 'Gestionale · 2023 – 2024',
+      en: 'Management software · 2023 – today',
+      it: 'Gestionale · 2023 – oggi',
     },
     desc: {
-      en: 'As SQL developer I worked on the database behind a management software: queries, views and stored procedures on SQL Server.',
-      it: 'Come SQL developer ho lavorato sul database di un gestionale: query, viste e stored procedure su SQL Server.',
+      en: 'As SQL developer I work on the database of a management software already in production: queries, views and stored procedures on SQL Server.',
+      it: 'Come SQL developer lavoro sul database di un gestionale già in produzione: query, viste e stored procedure su SQL Server.',
     },
     stack: 'SQL Server, SSMS',
     private: true,
@@ -358,7 +358,10 @@ export const PROJECTS: ProjectData[] = [
           en: 'Year',
           it: 'Anno',
         },
-        v: '2023 – 2024',
+        v: {
+          en: '2023 – today',
+          it: '2023 – oggi',
+        },
       },
       {
         k: 'Stack',
@@ -370,12 +373,12 @@ export const PROJECTS: ProjectData[] = [
       it: 'Il livello dati di un gestionale doveva crescere a ogni nuova funzione.',
     },
     solution: {
-      en: 'Queries, views and stored procedures on SQL Server.',
-      it: 'Query, viste e stored procedure su SQL Server.',
+      en: 'I joined an existing product and took part in its recent development for some clients: queries, views and stored procedures on SQL Server.',
+      it: 'Sono entrato in un prodotto già esistente e ho partecipato al suo sviluppo recente per alcuni clienti: query, viste e stored procedure su SQL Server.',
     },
     result: {
-      en: '[To write]',
-      it: '[Da scrivere]',
+      en: 'The software is in production with many clients, including the features I worked on.',
+      it: 'Il gestionale è in produzione presso molti clienti, comprese le funzioni a cui ho lavorato.',
     },
   },
   {
