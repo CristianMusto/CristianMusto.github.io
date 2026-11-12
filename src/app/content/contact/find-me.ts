@@ -12,8 +12,8 @@ export const findMe: PlanetData = {
     it: 'Link',
   },
   desc: {
-    en: 'Email, LinkedIn and GitHub. My CV is on the way.',
-    it: 'Email, LinkedIn e GitHub. Il CV è in arrivo.',
+    en: 'Email, LinkedIn, GitHub and my CV, as a developer or as a designer.',
+    it: 'Email, LinkedIn, GitHub e il mio CV, da sviluppatore o da designer.',
   },
   c: 'ice',
   size: 26,
@@ -39,10 +39,28 @@ export const findMe: PlanetData = {
     {
       k: 'CV',
       v: {
-        en: 'Coming soon',
-        it: 'In arrivo',
+        en: 'Software developer · PDF',
+        it: 'Software developer · PDF',
       },
-      plain: true,
+      href: {
+        en: '/cv/Cristian_Musto_CV_Developer_EN.pdf',
+        it: '/cv/Cristian_Musto_CV_Developer_IT.pdf',
+      },
+      blank: true,
+      plain: false,
+    },
+    {
+      k: 'CV',
+      v: {
+        en: 'UI/UX designer · PDF',
+        it: 'UI/UX designer · PDF',
+      },
+      href: {
+        en: '/cv/Cristian_Musto_CV_Designer_EN.pdf',
+        it: '/cv/Cristian_Musto_CV_Designer_IT.pdf',
+      },
+      blank: true,
+      plain: false,
     },
   ],
 };

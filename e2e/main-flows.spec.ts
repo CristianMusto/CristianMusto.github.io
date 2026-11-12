@@ -130,6 +130,23 @@ test.describe('keyboard shortcuts', () => {
   });
 });
 
+test.describe('CV', () => {
+  for (const [lang, file] of [
+    ['en', 'Developer_EN'],
+    ['it', 'Developer_IT'],
+  ]) {
+    test(`/${lang} links its CV and the PDF is served`, async ({ page, request }) => {
+      await page.goto(`/${lang}/contact/find-me`);
+      const link = page.locator(`a[href="/cv/Cristian_Musto_CV_${file}.pdf"]`);
+      await expect(link).toBeVisible();
+      await expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+      const res = await request.get(`/cv/Cristian_Musto_CV_${file}.pdf`);
+      expect(res.status()).toBe(200);
+      expect((await res.body()).subarray(0, 5).toString()).toBe('%PDF-');
+    });
+  }
+});
+
 test.describe('contact form', () => {
   test('shows errors next to the fields on an empty submit', async ({ page }) => {
     await page.goto('/en/contact/message');

@@ -7,9 +7,14 @@
       </dt>
       <dd class="detail-value">
         @if (r?.href) {
-          <a class="detail-link" [attr.href]="r?.href" [style.--text-decoration-color]="txt(v?.page?.hex)">{{
-            txt(r?.v)
-          }}</a>
+          <a
+            class="detail-link"
+            [attr.href]="r?.href"
+            [attr.target]="r?.blank ? '_blank' : null"
+            [attr.rel]="r?.blank ? 'noopener noreferrer' : null"
+            [style.--text-decoration-color]="txt(v?.page?.hex)"
+            >{{ txt(r?.v) }}</a
+          >
         }
         @if (r?.plain) {
           <span>{{ txt(r?.v) }}</span>
