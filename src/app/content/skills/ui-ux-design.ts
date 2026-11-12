@@ -22,8 +22,8 @@ export const uiUxDesign: PlanetData = {
     it: 'Il design è una competenza più recente per me, a livello intermedio, e la uso sui prodotti che sviluppo.',
   },
   body: {
-    en: 'I design in Figma, studied UX/UI theory and web design, and designed the booking platforms for a hospitality client before building them.',
-    it: 'Progetto in Figma, ho studiato teoria UX/UI e web design, e ho progettato le piattaforme di prenotazione per un cliente hospitality prima di svilupparle.',
+    en: 'I design in Figma, studied UX/UI theory and web design, and designed the booking platforms for a hospitality client before building them with the team.',
+    it: 'Progetto in Figma, ho studiato teoria UX/UI e web design, e ho progettato le piattaforme di prenotazione per un cliente hospitality prima di svilupparle con il team.',
   },
   itemsTitle: {
     en: 'What I do',

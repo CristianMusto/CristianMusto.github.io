@@ -19,8 +19,8 @@ export const txtGroup: PlanetData = {
     it: 'Da febbraio 2023 lavoro in LBA Consulting, società del gruppo TXT. Ho iniziato come SQL e front-end developer e ora sono software developer: avanzato in Angular, DevExtreme e SQL Server, agli inizi con ASP.NET Core ed EF Core.',
   },
   body: {
-    en: 'Most clients are under NDA, so the projects below are described without naming them.',
-    it: 'La maggior parte dei clienti è coperta da NDA, quindi i progetti qui sotto sono descritti senza nominarli.',
+    en: 'I work in a five-person team: every project below is team work, and each page says what I did. Most clients are under NDA, so they are described without naming them.',
+    it: 'Lavoro in un team di cinque persone: ogni progetto qui sotto è un lavoro di squadra, e ogni pagina dice cosa ho fatto io. La maggior parte dei clienti è coperta da NDA, quindi sono descritti senza nominarli.',
   },
   facts: [
     {
