@@ -79,8 +79,8 @@ export const PROJECTS: ProjectData[] = [
       it: 'Onboarding esercenti',
     },
     kind: {
-      en: 'Payments · 2025 – today',
-      it: 'Pagamenti · 2025 – oggi',
+      en: 'Payments · 2026 – today',
+      it: 'Pagamenti · 2026 – oggi',
     },
     desc: {
       en: 'A portal where merchants sign up, step by step, for POS terminals and meal-voucher acceptance, for a payments company in the group. Front end and API.',
@@ -112,8 +112,8 @@ export const PROJECTS: ProjectData[] = [
           it: 'Anno',
         },
         v: {
-          en: '2025 – today',
-          it: '2025 – oggi',
+          en: '2026 – today',
+          it: '2026 – oggi',
         },
       },
       {
@@ -143,8 +143,8 @@ export const PROJECTS: ProjectData[] = [
       it: 'Prenotazione visite',
     },
     kind: {
-      en: 'Hospitality · 2023 – 2024',
-      it: 'Hospitality · 2023 – 2024',
+      en: 'Hospitality · 2024 – 2025',
+      it: 'Hospitality · 2024 – 2025',
     },
     desc: {
       en: 'I designed and built a reservation platform for guided visits and events across several estates, from the booking flow to the back office.',
@@ -175,7 +175,7 @@ export const PROJECTS: ProjectData[] = [
           en: 'Year',
           it: 'Anno',
         },
-        v: '2023 – 2024',
+        v: '2024 – 2025',
       },
       {
         k: 'Stack',
@@ -204,8 +204,8 @@ export const PROJECTS: ProjectData[] = [
       it: 'Portale B2B agenti',
     },
     kind: {
-      en: 'Hospitality · B2B',
-      it: 'Hospitality · B2B',
+      en: 'Hospitality · 2024 – 2026',
+      it: 'Hospitality · 2024 – 2026',
     },
     desc: {
       en: 'A B2B portal where agents book visits for their clients. I did UI, UX and code: the form data is saved to the database, which then emails a summary to the person who manages the visits.',
@@ -236,7 +236,10 @@ export const PROJECTS: ProjectData[] = [
           en: 'Year',
           it: 'Anno',
         },
-        v: '2023 – 2024',
+        v: {
+          en: '2024 – 2025 · rebrand 2026',
+          it: '2024 – 2025 · rebrand 2026',
+        },
       },
       {
         k: 'Stack',
@@ -248,8 +251,8 @@ export const PROJECTS: ProjectData[] = [
       it: 'Gli agenti prenotavano le visite per i clienti al telefono o via email, e i dettagli si perdevano per strada.',
     },
     solution: {
-      en: 'A B2B portal I designed and built: the form data is saved to SQL Server, which emails a summary to the person who manages the visits.',
-      it: 'Un portale B2B che ho progettato e sviluppato: i dati del modulo vengono salvati su SQL Server, che invia una mail di riepilogo alla responsabile delle visite.',
+      en: 'A B2B portal I designed and built in two phases: the first version in 2024 – 2025, then its rebrand in 2026. The form data is saved to SQL Server, which emails a summary to the person who manages the visits.',
+      it: 'Un portale B2B che ho progettato e sviluppato in due fasi: la prima versione nel 2024 – 2025, poi il rebrand nel 2026. I dati del modulo vengono salvati su SQL Server, che invia una mail di riepilogo alla responsabile delle visite.',
     },
     result: {
       en: 'In use: visits are better organised and clients no longer get last-minute surprises.',
