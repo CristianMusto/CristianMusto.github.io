@@ -62,8 +62,8 @@ export const PROJECTS: ProjectData[] = [
       it: 'Un gestionale ha bisogno di decine di schermate che appaiano e si comportino allo stesso modo.',
     },
     solution: {
-      en: 'A shared Angular library on top of DevExtreme, with documented components and the ASP.NET Core and EF Core APIs behind them.',
-      it: 'Una libreria Angular condivisa sopra DevExtreme, con componenti documentati e le API ASP.NET Core ed EF Core che li alimentano.',
+      en: 'I worked on part of its front end, in Angular on top of DevExtreme, and since 2026 on its ASP.NET Core and EF Core APIs.',
+      it: 'Ho lavorato su una parte del front end, in Angular sopra DevExtreme, e dal 2026 sulle API in ASP.NET Core ed EF Core.',
     },
     result: {
       en: 'The first version is released and new screens are built from the library.',
@@ -79,12 +79,12 @@ export const PROJECTS: ProjectData[] = [
       it: 'Onboarding esercenti',
     },
     kind: {
-      en: 'Payments · 2025 – today',
-      it: 'Pagamenti · 2025 – oggi',
+      en: 'Payments · 2026 – today',
+      it: 'Pagamenti · 2026 – oggi',
     },
     desc: {
-      en: 'A portal where merchants sign up, step by step, for POS terminals and meal-voucher acceptance, for a payments company in the group. Front end and API.',
-      it: 'Un portale dove gli esercenti si registrano, passo dopo passo, per POS e accettazione dei buoni pasto, per una società di pagamenti del gruppo. Front end e API.',
+      en: 'A portal where merchants sign up, step by step, for POS terminals and meal-voucher acceptance, for a payments company in the group. I work on its front end and API.',
+      it: 'Un portale dove gli esercenti si registrano, passo dopo passo, per POS e accettazione dei buoni pasto, per una società di pagamenti del gruppo. Lavoro su front end e API.',
     },
     stack: 'Angular, TypeScript, SCSS, ASP.NET Core, EF Core, SQL Server',
     private: true,
@@ -112,8 +112,8 @@ export const PROJECTS: ProjectData[] = [
           it: 'Anno',
         },
         v: {
-          en: '2025 – today',
-          it: '2025 – oggi',
+          en: '2026 – today',
+          it: '2026 – oggi',
         },
       },
       {
@@ -126,8 +126,8 @@ export const PROJECTS: ProjectData[] = [
       it: 'Gli esercenti dovevano affrontare una registrazione lunga e ancora su carta per avere i POS e accettare i buoni pasto.',
     },
     solution: {
-      en: 'A step-by-step portal with validation next to each field, built in Angular on ASP.NET Core and EF Core APIs.',
-      it: 'Un portale passo dopo passo con la validazione accanto a ogni campo, in Angular su API ASP.NET Core ed EF Core.',
+      en: 'With the team I work on a step-by-step portal with validation next to each field: the Angular front end and the ASP.NET Core and EF Core API.',
+      it: 'Con il team lavoro a un portale passo dopo passo con la validazione accanto a ogni campo: il front end in Angular e le API in ASP.NET Core ed EF Core.',
     },
     result: {
       en: 'Live and in testing with a group of selected merchants: registration is now fully online.',
@@ -143,12 +143,12 @@ export const PROJECTS: ProjectData[] = [
       it: 'Prenotazione visite',
     },
     kind: {
-      en: 'Hospitality · 2023 – 2024',
-      it: 'Hospitality · 2023 – 2024',
+      en: 'Hospitality · 2024 – 2025',
+      it: 'Hospitality · 2024 – 2025',
     },
     desc: {
-      en: 'I designed and built a reservation platform for guided visits and events across several estates, from the booking flow to the back office.',
-      it: 'Ho progettato e sviluppato una piattaforma di prenotazione per visite guidate ed eventi su più tenute, dal flusso di prenotazione al back office.',
+      en: 'A reservation platform for guided visits and events across several estates, from the booking flow to the back office. I designed it and built most of it myself.',
+      it: 'Una piattaforma di prenotazione per visite guidate ed eventi su più tenute, dal flusso di prenotazione al back office. L’ho progettata e sviluppata in gran parte da solo.',
     },
     stack: 'Figma, Angular, TypeScript, DevExtreme, SQL Server',
     private: true,
@@ -175,7 +175,7 @@ export const PROJECTS: ProjectData[] = [
           en: 'Year',
           it: 'Anno',
         },
-        v: '2023 – 2024',
+        v: '2024 – 2025',
       },
       {
         k: 'Stack',
@@ -187,8 +187,8 @@ export const PROJECTS: ProjectData[] = [
       it: 'Visite ed eventi su più tenute avevano bisogno di un unico flusso di prenotazione e di un unico back office.',
     },
     solution: {
-      en: 'I designed the flows and the interface in Figma, then built them in Angular and DevExtreme on SQL Server.',
-      it: 'Ho progettato flussi e interfaccia in Figma, poi li ho sviluppati in Angular e DevExtreme su SQL Server.',
+      en: 'I designed the flows and the interface in Figma, then built most of them myself in Angular and DevExtreme on SQL Server.',
+      it: 'Ho progettato flussi e interfaccia in Figma, poi li ho sviluppati in gran parte da solo in Angular e DevExtreme su SQL Server.',
     },
     result: {
       en: 'Delivered and in use. I still take care of fixes and maintenance.',
@@ -204,12 +204,12 @@ export const PROJECTS: ProjectData[] = [
       it: 'Portale B2B agenti',
     },
     kind: {
-      en: 'Hospitality · B2B',
-      it: 'Hospitality · B2B',
+      en: 'Hospitality · 2024 – 2026',
+      it: 'Hospitality · 2024 – 2026',
     },
     desc: {
-      en: 'A B2B portal where agents book visits for their clients. I did UI, UX and code: the form data is saved to the database, which then emails a summary to the person who manages the visits.',
-      it: 'Un portale B2B dove gli agenti prenotano visite per i loro clienti. Ho curato UI, UX e codice: i dati del modulo vengono salvati a database, che poi invia una mail di riepilogo alla responsabile delle visite.',
+      en: 'A B2B portal where agents book visits for their clients. I designed UI and UX and worked on the code: the form data is saved to the database, which then emails a summary to the person who manages the visits.',
+      it: 'Un portale B2B dove gli agenti prenotano visite per i loro clienti. Ho curato UI e UX e lavorato al codice: i dati del modulo vengono salvati a database, che poi invia una mail di riepilogo alla responsabile delle visite.',
     },
     stack: 'Figma, Angular, TypeScript, SQL Server',
     private: true,
@@ -236,7 +236,10 @@ export const PROJECTS: ProjectData[] = [
           en: 'Year',
           it: 'Anno',
         },
-        v: '2023 – 2024',
+        v: {
+          en: '2024 – 2025 · rebrand 2026',
+          it: '2024 – 2025 · rebrand 2026',
+        },
       },
       {
         k: 'Stack',
@@ -248,8 +251,8 @@ export const PROJECTS: ProjectData[] = [
       it: 'Gli agenti prenotavano le visite per i clienti al telefono o via email, e i dettagli si perdevano per strada.',
     },
     solution: {
-      en: 'A B2B portal I designed and built: the form data is saved to SQL Server, which emails a summary to the person who manages the visits.',
-      it: 'Un portale B2B che ho progettato e sviluppato: i dati del modulo vengono salvati su SQL Server, che invia una mail di riepilogo alla responsabile delle visite.',
+      en: 'A B2B portal I designed and developed with the team in two phases: the first version in 2024 – 2025, then its rebrand in 2026. The form data is saved to SQL Server, which emails a summary to the person who manages the visits.',
+      it: 'Un portale B2B che ho progettato e sviluppato con il team in due fasi: la prima versione nel 2024 – 2025, poi il rebrand nel 2026. I dati del modulo vengono salvati su SQL Server, che invia una mail di riepilogo alla responsabile delle visite.',
     },
     result: {
       en: 'In use: visits are better organised and clients no longer get last-minute surprises.',
@@ -309,8 +312,8 @@ export const PROJECTS: ProjectData[] = [
       it: 'Un distributore della grande distribuzione doveva gestire in un unico posto i contratti con i fornitori locali.',
     },
     solution: {
-      en: 'An Angular app with the lists and forms for each contract.',
-      it: 'Un’app Angular con le liste e i moduli per ogni contratto.',
+      en: 'I worked on the Angular app: the lists and forms for each contract.',
+      it: 'Ho lavorato all’app Angular: le liste e i moduli per ogni contratto.',
     },
     result: {
       en: 'In use by the distributor.',
