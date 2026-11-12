@@ -62,8 +62,8 @@ export const PROJECTS: ProjectData[] = [
       it: 'Un gestionale ha bisogno di decine di schermate che appaiano e si comportino allo stesso modo.',
     },
     solution: {
-      en: 'A shared Angular library on top of DevExtreme, with documented components and the ASP.NET Core and EF Core APIs behind them.',
-      it: 'Una libreria Angular condivisa sopra DevExtreme, con componenti documentati e le API ASP.NET Core ed EF Core che li alimentano.',
+      en: 'I worked on part of its front end, in Angular on top of DevExtreme, and since 2026 on its ASP.NET Core and EF Core APIs.',
+      it: 'Ho lavorato su una parte del front end, in Angular sopra DevExtreme, e dal 2026 sulle API in ASP.NET Core ed EF Core.',
     },
     result: {
       en: 'The first version is released and new screens are built from the library.',
