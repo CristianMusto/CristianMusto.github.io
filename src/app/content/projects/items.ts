@@ -147,8 +147,8 @@ export const PROJECTS: ProjectData[] = [
       it: 'Hospitality · 2024 – 2025',
     },
     desc: {
-      en: 'A reservation platform for guided visits and events across several estates, from the booking flow to the back office. I designed it and worked on its development with the team.',
-      it: 'Una piattaforma di prenotazione per visite guidate ed eventi su più tenute, dal flusso di prenotazione al back office. L’ho progettata e ho lavorato al suo sviluppo con il team.',
+      en: 'A reservation platform for guided visits and events across several estates, from the booking flow to the back office. I designed it and built most of it myself.',
+      it: 'Una piattaforma di prenotazione per visite guidate ed eventi su più tenute, dal flusso di prenotazione al back office. L’ho progettata e sviluppata in gran parte da solo.',
     },
     stack: 'Figma, Angular, TypeScript, DevExtreme, SQL Server',
     private: true,
@@ -187,8 +187,8 @@ export const PROJECTS: ProjectData[] = [
       it: 'Visite ed eventi su più tenute avevano bisogno di un unico flusso di prenotazione e di un unico back office.',
     },
     solution: {
-      en: 'I designed the flows and the interface in Figma, then worked with the team on building them in Angular and DevExtreme on SQL Server.',
-      it: 'Ho progettato flussi e interfaccia in Figma, poi ho lavorato con il team al loro sviluppo in Angular e DevExtreme su SQL Server.',
+      en: 'I designed the flows and the interface in Figma, then built most of them myself in Angular and DevExtreme on SQL Server.',
+      it: 'Ho progettato flussi e interfaccia in Figma, poi li ho sviluppati in gran parte da solo in Angular e DevExtreme su SQL Server.',
     },
     result: {
       en: 'Delivered and in use. I still take care of fixes and maintenance.',
