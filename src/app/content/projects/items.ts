@@ -147,8 +147,8 @@ export const PROJECTS: ProjectData[] = [
       it: 'Hospitality · 2024 – 2025',
     },
     desc: {
-      en: 'A reservation platform for guided visits and events across several estates, from the booking flow to the back office. I designed it and built most of it myself.',
-      it: 'Una piattaforma di prenotazione per visite guidate ed eventi su più tenute, dal flusso di prenotazione al back office. L’ho progettata e sviluppata in gran parte da solo.',
+      en: 'A reservation and visit platform for a wine group, on desktop and mobile: 35,000 visitors a year across 10 estates. I designed it and built most of it myself.',
+      it: 'Una piattaforma di prenotazione e gestione visite per un gruppo vinicolo, da desktop e da mobile: 35.000 visitatori l’anno su 10 tenute. L’ho progettata e sviluppata in gran parte da solo.',
     },
     stack: 'Figma, Angular, TypeScript, DevExtreme, SQL Server',
     private: true,
@@ -183,16 +183,16 @@ export const PROJECTS: ProjectData[] = [
       },
     ],
     challenge: {
-      en: 'Visits and events across several estates needed one booking flow and one back office.',
-      it: 'Visite ed eventi su più tenute avevano bisogno di un unico flusso di prenotazione e di un unico back office.',
+      en: 'Visits, tastings and stays across 10 estates, with 50 services, 35 halls and over 15 guest rooms, needed one booking flow and one back office, also for the staff on site.',
+      it: 'Visite, degustazioni e pernottamenti su 10 tenute, con 50 servizi, 35 sale e oltre 15 camere, avevano bisogno di un unico flusso di prenotazione e di un unico back office, anche per il personale in tenuta.',
     },
     solution: {
-      en: 'I designed the flows and the interface in Figma, then built most of them myself in Angular and DevExtreme on SQL Server.',
-      it: 'Ho progettato flussi e interfaccia in Figma, poi li ho sviluppati in gran parte da solo in Angular e DevExtreme su SQL Server.',
+      en: 'I designed the flows and the interface in Figma, then built most of them myself in Angular and DevExtreme on SQL Server, with a mobile version for agenda, daily summary and housekeeping. With the team I worked on the integrations with ERP, CRM and BI.',
+      it: 'Ho progettato flussi e interfaccia in Figma, poi li ho sviluppati in gran parte da solo in Angular e DevExtreme su SQL Server, con una versione mobile per agenda, riepilogo giornaliero e housekeeping. Con il team ho lavorato alle integrazioni con ERP, CRM e BI.',
     },
     result: {
-      en: 'Delivered and in use. I still take care of fixes and maintenance.',
-      it: 'Consegnato e in uso. Me ne occupo ancora per correzioni e manutenzione.',
+      en: 'In use for 35,000 visitors a year across 10 estates. I still take care of fixes and maintenance.',
+      it: 'In uso per 35.000 visitatori l’anno su 10 tenute. Me ne occupo ancora per correzioni e manutenzione.',
     },
   },
   {
